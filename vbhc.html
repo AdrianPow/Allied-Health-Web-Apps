@@ -137,7 +137,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
 #content .wheel .wheel-link:hover .wheel-label { text-decoration: underline !important; }
 .wheel-link .wheel-shape { stroke: #fff; stroke-width: 6; transition: filter .15s; }
 .wheel-link:hover .wheel-shape { filter: brightness(.93); }
-.wheel-link:focus-visible .wheel-shape { stroke: var(--QLD-color-light-focus); stroke-width: 7; }
+/* The pale focus colour shows against the navy gears and every domain colour. */
+#content .wheel .wheel-link:focus-visible .wheel-shape { stroke: var(--QLD-color-dark-focus); stroke-width: 10; }
 
 /* Your project */
 .project-card {
@@ -257,6 +258,36 @@ html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
 #content .kq textarea, #content .ws textarea { resize: vertical; white-space: pre-wrap; overflow-wrap: anywhere; }
 #content .qld__text-input--block { max-width: 56rem; }
 #content .p-start { max-width: 20rem; }
+
+/* About value-based health care (overview) */
+@media screen and (min-width: 1100px) { .about-split { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); } }
+.value-eq { margin: 0; }
+.veq { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 1.5rem; border-radius: 12px; background: var(--QLD-color-light-background__shade); color: var(--QLD-color-light-heading); }
+.veq-word, .veq-sign { font-size: 1.5rem; font-weight: 700; }
+.veq-frac { flex: 1; min-width: 0; display: flex; flex-direction: column; text-align: center; font-weight: 600; line-height: 1.4; }
+.veq-top { padding-bottom: .625rem; border-bottom: 3px solid currentColor; }
+.veq-bottom { padding-top: .625rem; }
+.veq-dollar { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; margin-left: .25rem; border-radius: 50%; background: var(--QLD-color-light-heading); color: #fff; font-size: .875em; }
+.value-eq figcaption { margin-top: .5rem; text-align: center; }
+#content .about-tip { max-width: 64rem; margin-top: 2rem; }
+#content .about-tip p { max-width: none; }
+.two-col-list { columns: 2 14rem; column-gap: 2.5rem; }
+.two-col-list li { break-inside: avoid; }
+.res-title { font-weight: 600; }
+
+/* Table 1 of the framework: strategies and allied health examples */
+.ahv { margin: 1.5rem 0 0; max-width: 64rem; }
+#content .ahv figcaption { font-weight: 600; margin: 0 0 .5rem; }
+.ahv-head, .ahv-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: .25rem 1.5rem; padding: .75rem 1rem; }
+.ahv-head { background: var(--QLD-color-light-background__shade); font-weight: 600; font-size: .9375rem; }
+.ahv-list { margin: 0; }
+.ahv-row { border-top: 1px solid var(--QLD-color-light-border); }
+.ahv-row dt { grid-column: 1; margin: 0; font-weight: 600; }
+.ahv-row dt + dt { margin-top: .5rem; }
+.ahv-row dd { grid-column: 2; grid-row: 1 / span 2; margin: 0; }
+#content .ahv-row dd p { margin: 0 0 .5rem; }
+#content .ahv-row dd ul { margin: 0; padding-left: 1.25rem; }
+#content .ahv-row dd li { margin: 0 0 .25rem; }
 
 /* Accordions: the site's accordion look on native <details> */
 .acc { border-top: 1px solid var(--QLD-color-light-border); border-bottom: 1px solid var(--QLD-color-light-border); margin: 1rem 0 0; max-width: 64rem; }
@@ -518,6 +549,11 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
 /* Phones: the section links become an even two-column grid, and worksheet tables
    become one stacked block per row (labels from data-label). */
 @media screen and (max-width: 639.98px) {
+  .ahv-head { display: none; }
+  .ahv-row { display: block; padding: .75rem 0; }
+  .ahv-row dd { margin-top: .5rem; }
+  .veq { padding: 1rem; gap: .75rem; }
+  .veq-word, .veq-sign { font-size: 1.25rem; }
   #content .planner-nav ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .planner-nav { border-bottom: 0; }
   .nav-link, .nav-link.active { margin: 0; border: 1px solid transparent; border-radius: 4px; height: 100%; }
@@ -885,7 +921,7 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
     <div class="split home-split">
       <div class="intro-copy">
         <h2 id="home-title" tabindex="-1">About this planner</h2>
-        <p>The <a href="https://www.health.qld.gov.au/ahwac/html/allied-health-workforce/VBHC" target="_blank" rel="noopener"><strong>Allied Health Framework for Value-Based Health Care</strong></a>
+        <p>The <a href="https://www.health.qld.gov.au/ahwac/html/allied-health-workforce/VBHC" target="_blank" rel="noopener"><strong>Allied Health Framework for Value-Based Health Care</strong><span class="visually-hidden"> (opens in a new tab)</span></a>
         supports health professionals, managers and project leads as they work with consumers and communities to change the way care is
         delivered, so that it focuses on the outcomes that matter to people and communities.</p>
         <p>This planner turns the framework into a working plan for your project. For each of the framework&rsquo;s five domains it gives you:</p>
@@ -948,11 +984,14 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
     <ul class="ref-grid ref-grid-domains" id="domain-grid"></ul>
   </div>
 
+  <!-- About value-based health care: rendered from VBHC_ABOUT in the content data -->
+  <div class="ahl-section about-vbhc" id="about-vbhc"></div>
+
   <p class="hint source-note">
-    Source: <a href="https://www.health.qld.gov.au/__data/assets/pdf_file/0026/1190267/Framework.pdf" target="_blank" rel="noopener"><em>Allied Health Framework for Value-Based Health Care 2022</em> (PDF 1970&nbsp;kB)</a>,
+    Source: <a href="https://www.health.qld.gov.au/__data/assets/pdf_file/0026/1190267/Framework.pdf" target="_blank" rel="noopener"><em>Allied Health Framework for Value-Based Health Care 2022</em> (PDF 1970&nbsp;kB)<span class="visually-hidden"> (opens in a new tab)</span></a>,
     State of Queensland (Queensland Health), prepared with the Australian Healthcare and Hospitals Association.
-    See also the <a href="https://www.health.qld.gov.au/__data/assets/pdf_file/0027/1190268/Overview.pdf" target="_blank" rel="noopener">Overview of the Framework (PDF 235&nbsp;kB)</a>.
-    Licensed under <a href="https://creativecommons.org/licenses/by/3.0/au/" target="_blank" rel="noopener">CC BY 3.0 AU</a>.
+    See also the <a href="https://www.health.qld.gov.au/__data/assets/pdf_file/0027/1190268/Overview.pdf" target="_blank" rel="noopener">Overview of the Framework (PDF 235&nbsp;kB)<span class="visually-hidden"> (opens in a new tab)</span></a>.
+    Licensed under <a href="https://creativecommons.org/licenses/by/3.0/au/" target="_blank" rel="noopener">CC BY 3.0 AU<span class="visually-hidden"> (opens in a new tab)</span></a>.
   </p>
 </section>
 
@@ -1044,7 +1083,7 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
 </div>
             <section class="qld__body last-updated">
             <div class="container-fluid">
-                <p><strong style="padding-right: 12px;">Last updated:</strong> 2 October 2026</p>
+                <p><strong style="padding-right: 12px;">Last updated:</strong> 8 October 2026</p>
             </div>
         </section>
 </main>
@@ -1310,10 +1349,10 @@ const ELEMENTS = {
       'What organisational or state government strategies and priorities are relevant to this population segment?'
     ],
     about: {
-      why: 'Population segmentation separates populations into groups so you can better assess each group’s wants, needs and health priorities, and design integrated models of care that are outcomes-focused and cost-effective. A clearly defined segment keeps activities within the scope of Queensland Health’s publicly funded services and the role of the facility; anything beyond that scope is done in partnership, for example with Primary Health Networks (PHNs).',
+      why: 'Population segmentation separates populations into groups so you can better assess each group’s wants, needs and health priorities, and design integrated models of care that are outcomes-focused and cost-effective. A clearly defined segment keeps activities within the scope of Queensland Health’s publicly funded services and the role of the facility; anything beyond that scope is done in partnership, for example with Primary Health Networks (PHNs). VBHC can enable you to use the current funding mechanism in new and innovative ways that are more focused on achieving the outcomes that are important to your population segment.',
       what: 'Identifying communities or groups of people that share an interrelated set of needs or circumstances affecting their health, which can be addressed in an integrated way.',
-      how: 'Link back to the core business of your profession and organisation, and map national, state, HHS, service and organisational priorities. Use data, but recognise its limits; partnerships with consumers, carers and families and interdisciplinary teams help build a shared understanding. Make equity a core consideration — including people who do not currently access your service. Make sure the segment is large enough for economies of scale (too small and you end up providing boutique services), and test your assumptions by interviewing a diversity of people believed to be in the segment.',
-      use: 'The population segment becomes the target beneficiaries of your reform project and anchors every other domain of the framework.'
+      how: 'Link back to the core business of your profession and organisation, and map national, state, HHS, service and organisational priorities. Use data, but recognise its limits; partnerships with consumers, carers and families and interdisciplinary teams help build a shared understanding. Identify the risks and trade-offs of working with a particular segment: VBHC is about delivering more with the resources we have, so cost/benefit considerations can inform the decision. Make equity a core consideration — including people who do not currently access your service. Make sure the segment is large enough for economies of scale (too small and you end up providing a series of boutique services). Groups that appear distinct but use the same services or pathways can be merged into one segment — for example, people with different types of cancer may share a set of needs. Test your assumptions by interviewing a diversity of people believed to be in the segment.',
+      use: 'This population will be the target beneficiaries of your reform project.'
     },
     worksheet: 'segment',
     boxes: [
@@ -1321,11 +1360,11 @@ const ELEMENTS = {
         html: '<p>Dental Health Services Victoria (DHSV) identified people experiencing homelessness as a segment whose needs were unmet: they were not turning up for appointments or accessing the care they needed. Using appreciative inquiry, DHSV met with homeless communities and found that many of their preconceptions (for example, that people have lots of spare time) were untrue. People had very busy schedules — to survive they had to be in certain places at certain times to access food, showers, laundry or financial assistance. With this deeper understanding of need, DHSV redesigned its services to better meet the needs of this population segment.</p>' }
     ],
     resources: [
-      { t: 'The Queensland Health System Outlook to 2026', u: 'https://www.publications.qld.gov.au/dataset/service-agreements-for-hhs-hospital-and-health-services-supporting-documents/resource/985068f6-151a-4743-8d80-1e17ee9d92a0' },
+      { t: 'The Queensland Health System Outlook to 2026', d: 'Queensland priorities for the sustainability of health services', u: 'https://www.publications.qld.gov.au/dataset/service-agreements-for-hhs-hospital-and-health-services-supporting-documents/resource/985068f6-151a-4743-8d80-1e17ee9d92a0' },
       { t: 'Guide to Health Service Planning, version 3 (2015) — Queensland Health', u: 'https://www.health.qld.gov.au/__data/assets/pdf_file/0025/443572/guideline-health-service-planning.pdf' },
       { t: 'Publicly Funded Services Guideline (2019) — Queensland Health', u: 'https://www.health.qld.gov.au/__data/assets/pdf_file/0030/397461/qh-gdl-336-1.pdf' },
       { t: 'Allied Health Translating Research into Practice (AH-TRIP) — Queensland Health', u: 'https://www.health.qld.gov.au/clinical-practice/database-tools/translating-research-into-practice-trip/about-us' },
-      { t: 'An Introduction to Six Sigma and Process Improvement — Evans and Lindsay (book preview)', u: 'https://www.google.com.au/books/edition/An_Introduction_to_Six_Sigma_and_Process/CYHAAgAAQBAJ?hl=en&gbpv=1&pg=PP1&printsec=frontcover' },
+      { t: 'Six Sigma Methodology for Service Redesign principles and processes — Evans and Lindsay (2015), book preview', u: 'https://www.google.com.au/books/edition/An_Introduction_to_Six_Sigma_and_Process/CYHAAgAAQBAJ?hl=en&gbpv=1&pg=PP1&printsec=frontcover' },
       { t: 'Local Area Needs Assessment (2021) — Queensland Health intranet (QHEPS)', u: 'https://qheps.health.qld.gov.au/__data/assets/pdf_file/0025/2744215/LANA-Framework.pdf', note: 'Queensland Health network only' }
     ] },
 
@@ -1335,8 +1374,8 @@ const ELEMENTS = {
       'How do we engage and support these key clinician leaders to champion VBHC and generate enthusiasm for its implementation?'
     ],
     about: {
-      why: 'Change is challenging, and clinician leaders can be important opinion leaders or champions: they influence others through their credibility, authority and status, and create a culture in which people feel heard, valued and able to contribute. Allied health professionals connect care along the continuum and are uniquely placed to provide clinician leadership in VBHC.',
-      what: 'There is no single definition. Clinician leaders take responsibility for, and work on behalf of, others. They are credible, recognised by colleagues as clinically competent, keep a significant clinical load, and can influence and communicate across professional and sector boundaries.',
+      why: 'Mounting pressures on the health system are leading to inevitable reform. With workloads increasing and many initiatives being proposed, clinician leadership is essential to ensure reform is safe, effective, practical and sustainable. Change is challenging, and clinician leaders can be important opinion leaders or champions: they influence others through their credibility, authority and status, and create a culture in which people feel heard, valued and able to contribute. Before they can advocate for change, clinician leaders need to understand why they are embarking on VBHC reform: VBHC requires working with the main players — health professionals, people and communities — not directing activities to them. Allied health professionals connect care along the continuum and are uniquely placed to provide clinician leadership in VBHC.',
+      what: 'There is no single definition. Clinician leaders take responsibility for, and work on behalf of, others. They are credible, recognised by colleagues as clinically competent, keep a significant clinical load, can influence and communicate across professional and sector boundaries, and can negotiate the balance between clinical judgement and resource constraint with management and executive.',
       how: 'Through courses and training, but more often embedded in practice: learning from others, testing leadership skills through practical experience, and mentoring.',
       use: 'Clinician leaders do not have to be the project lead, but their public support is critical to raising the profile of VBHC and achieving widespread acceptance of change. Implementation is more likely to succeed when clinical leaders from multiple disciplines are involved as supporters.'
     },
@@ -1347,7 +1386,9 @@ const ELEMENTS = {
       'How does our work align with the objectives and key performance indicators (KPIs) of my organisation?',
       'How will we communicate with executives and bring them along on the journey of change?',
       'How can we demonstrate the unique benefits of allied health services?',
-      'How does this align with Queensland Health and organisational objectives?'
+      'How does this align with Queensland Health and organisational objectives?',
+      // From the framework's Appendix 2 (Overview and key questions to consider) and the Overview document
+      'How will we maintain executive buy-in throughout the process?'
     ],
     about: {
       why: 'Engaging early with your executive builds situational awareness, helps you develop balanced proposals, define scope and frame your ideas strategically. Executive buy-in links organisational silos, secures resources (personnel, space, equipment, time and money) and is a chance to show the value allied health brings.',
@@ -1358,7 +1399,8 @@ const ELEMENTS = {
     worksheet: 'sixp',
     boxes: [
       { type: 'case', title: 'Cairns and Hinterland HHS: fostering an outcome-focused allied health workforce with ‘permission to lead’',
-        html: '<p>During the COVID-19 response, allied health staff were given ‘permission to lead’, and the Executive Director of Allied Health was identified as the person to lead the entire response. Allied health professionals gained skills outside their usual scope (managing quarantine hotels, the virtual ward, vaccination), creating a workforce more confident and open to new ways of delivering care. Key enablers included:</p><ul><li>opportunities to stretch skills, supported by executive and growth and development mentoring</li><li>a respectful environment in which staff could contribute to strategic decision making</li><li>attending high-level meetings to learn through observation</li><li>exposure to the variety of services and professions across the system</li><li>encouraging creative problem solving</li><li>giving public credit to those who had done the work</li><li>ensuring the flow of information so staff could make informed decisions.</li></ul>' }
+        html: '<p>During the COVID-19 response, allied health staff were given ‘permission to lead’, and the Executive Director of Allied Health was identified as the person to lead the entire response. Allied health professionals gained skills outside their usual scope (managing quarantine hotels, the virtual ward, vaccination), creating a workforce more confident and open to new ways of delivering care. Key enablers included:</p><ul><li>opportunities to stretch skills, supported by executive and growth and development mentoring</li><li>a respectful environment in which staff could contribute to strategic decision making</li><li>attending high-level meetings to learn through observation</li><li>exposure to the variety of services and professions across the system</li><li>encouraging creative problem solving</li><li>giving public credit to those who had done the work</li><li>ensuring the flow of information so staff could make informed decisions.</li></ul>' },
+      { type: 'ahvalue' }
     ] },
 
   e133: { num: '1.3.3', title: 'Political landscape', group: 'sphere',
@@ -1368,7 +1410,7 @@ const ELEMENTS = {
     about: {
       why: 'Understanding the political landscape of the people, communities and services you work with lets you plan for barriers, mandates or enablers. Consider issues beyond health needs too, such as local employment, regional development and infrastructure.',
       what: 'Understanding the background, interests and responsibilities of elected representatives, and the national or state reform agendas (for example, the findings of a Royal Commission) that align with your case for change. As public servants, Queensland Health employees must follow Queensland Health guidelines for interactions with elected officials, and seek approval from senior officers.',
-      how: 'Map the external structures that might affect implementation: the political system, policies, the regulatory environment, public opinion, other players in the VBHC space, partnership opportunities, funding structures and the wider context. Include consumers in the mapping; they bring insight into community opinion.',
+      how: 'Map the external structures that might affect implementation: the political system, party politics and policies, the regulatory environment, public opinion, other players in the VBHC space, partnership opportunities, funding structures and the global political context. Include consumers in the mapping; they bring insight into community opinion.',
       use: 'Use the map to capitalise on supportive structures (existing mandates, relationships or interest groups), to plan around roadblocks or opposition, and to spot opportunities as they arise.'
     },
     worksheet: 'landscape',
@@ -1413,18 +1455,19 @@ const ELEMENTS = {
     worksheet: 'journey',
     boxes: [
       { type: 'case', title: 'Dental Health Services Victoria: the ‘war room’',
-        html: '<p>To support journey mapping, DHSV set up a dedicated ‘war room’, always open to staff, containing the evolving journey map. Staff could add their thoughts to the pathway at any time, with a constant supply of sticky notes and pens. The result was a more detailed story of what the service did, and how it interacted with the people it served, than any one group could have produced. The finished map wrapped around the entire room.</p>' }
+        html: '<p>To facilitate journey mapping, DHSV set up a ‘war room’: a dedicated room, always open to staff, containing the evolving journey map. Staff could add their thoughts to the pathway at any time, with a continual supply of sticky notes and pens on hand. The result was a more detailed story of what the service did, and how it interacted with the people it served, than any one group of people could have achieved. The finished map was so comprehensive it wrapped around the entire room.</p>' }
     ],
     resources: [
-      { t: 'Cause and effect analysis — Mind Tools', u: 'https://www.mindtools.com/pages/article/newTMC_03.htm' },
-      { t: 'Health Journey Mapping tools — Lowitja Institute', u: 'https://www.lowitja.org.au/page/services/tools/health-journey-mapping' }
+      { t: 'Cause and effect analysis — Mind Tools', d: 'a diagram-based technique that combines brainstorming and mind mapping to help identify the likely cause of problems', u: 'https://www.mindtools.com/pages/article/newTMC_03.htm' },
+      { t: 'Postcode Analysis', d: 'analysing postcode patient data to understand where the people accessing your service live and the distances they travel to access care' },
+      { t: 'Health Journey Mapping tools — Lowitja Institute', d: 'tools and resources to improve the quality and cultural safety of Aboriginal and Torres Strait Islander people’s health care journeys', u: 'https://www.lowitja.org.au/page/services/tools/health-journey-mapping' }
     ] },
 
   // ---- Domain 3: Support a person-centred outcome-driven workforce culture
   e31: { num: '3.1', title: 'Workforce culture',
     questions: ['How do we establish a culture within our organisation that is supportive of changing the status quo to better orientate care around what matters to people and communities?'],
     about: {
-      why: 'A supportive workforce culture is vital to the best outcomes for people and communities and to staff wellbeing. Culture is dynamic and can be cultivated. Understanding the culture where you plan to implement change helps you plan for barriers, mandates and enablers.',
+      why: 'A supportive workforce culture is vital to the best outcomes for people and communities and to staff wellbeing. Culture is dynamic and can be cultivated. Politics and self-interest often dictate how people feel about, and respond to, changes to the way they work — with positive and negative effects on change initiatives such as VBHC. Understanding the culture where you plan to implement change helps you plan for barriers, mandates and enablers.',
       what: 'In its simplest form, ‘how things are done around here’: the shared experiences, beliefs, assumptions, attitudes and practices that influence behaviour and professional relationships — at organisation level and in the subcultures of wards, departments, teams and professions.',
       how: 'Consider how organisational values align with a person-centred, outcome-driven approach, and build a strengths-based culture that builds on ‘what’s strong, rather than what’s wrong’. Common elements include creating purpose, communicating collaboratively, embracing diversity, inspiring loyalty, celebrating teamwork and engaging staff in driving change.',
       use: 'Culture can make or break a change initiative. Even without the power to mandate change from the top, every individual, team and leader can work within their sphere of influence to support a strengths-based culture that unites people around a shared objective.'
@@ -1445,7 +1488,7 @@ const ELEMENTS = {
   e32: { num: '3.2', title: 'Change management',
     questions: ['What structures and tools can we put in place and leverage to support our people through the process of change?'],
     about: {
-      why: '‘Organisations do not change, people do.’ Change that is implemented poorly can harm outcomes, staff wellbeing (hostility, turnover, low morale, resistance to future change) and budgets. An environment that helps people learn and embrace new ways of working makes successful change achievable.',
+      why: '‘Organisations do not change, people do.’ Change that is implemented poorly can harm outcomes, staff wellbeing (hostility, high turnover, bullying, low morale, resistance to future change) and budgets, with initiatives likely to fail. An environment that helps people learn and embrace new ways of working makes successful change achievable.',
       what: 'The application of a structured process and set of tools to lead people through a process of change to achieve a desired outcome.',
       how: 'Many frameworks exist, but four principles are common: understand the change (the ‘why’, which may differ for each stakeholder); plan the change (build a coalition of willing supporters); implement the change (give people the awareness, leadership, support and training they need); and communicate the change (a make-or-break step — acknowledge and validate people experiencing loss).',
       use: 'Change management embeds the processes and communication techniques that develop a workforce culture supportive of, and responsive to, VBHC.'
@@ -1455,12 +1498,12 @@ const ELEMENTS = {
       { t: 'Guide to Implementation — Centre for Effective Services', u: 'https://implementation.effectiveservices.org/' },
       { t: 'Allied Health Translating Research into Practice (AH-TRIP) — Queensland Health', u: 'https://www.health.qld.gov.au/clinical-practice/database-tools/translating-research-into-practice-trip/about-us' },
       { t: 'The behaviour change wheel: a new method for characterising and designing behaviour change interventions — Michie, van Stralen and West (2011)', u: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3096582/' },
-      { t: 'Application of the COM-B model to barriers and facilitators to chlamydia testing in general practice — McDonagh et al. (2018)', u: 'https://implementationscience.biomedcentral.com/articles/10.1186/s13012-018-0821-y' },
+      { t: 'Application of the COM-B model to barriers and facilitators to chlamydia testing in general practice for young people and primary care practitioners: a systematic review — McDonagh et al. (2018)', u: 'https://implementationscience.biomedcentral.com/articles/10.1186/s13012-018-0821-y' },
       { t: 'Diffusion of Innovation Theory', u: 'https://www.healthaffairs.org/doi/10.1377/hlthaff.2017.1104' },
       { t: 'PARiHS framework for implementing research into practice', u: 'https://www.nccmt.ca/knowledge-repositories/search/85' },
       { t: 'The Prosci ADKAR model — awareness, desire, knowledge, ability and reinforcement', u: 'https://www.prosci.com/methodology/adkar' },
       { t: 'Rethinking the change adoption curve — innovators, early adopters, early majority, late majority and laggards', u: 'https://www.asaecenter.org/resources/articles/an_plus/2017/september/rethinking-the-change-adoption-curve' },
-      { t: 'Start with ‘Why’ — Simon Sinek (video)', u: 'https://www.youtube.com/watch?v=2Ss78LfY3nE' }
+      { t: 'Start with ‘Why’ — TED Talk from Simon Sinek', u: 'https://www.youtube.com/watch?v=2Ss78LfY3nE' }
     ] },
 
   e33: { num: '3.3', title: 'Communication strategy',
@@ -1482,7 +1525,7 @@ const ELEMENTS = {
     ],
     about: {
       why: 'Health care collects a wealth of information, but not always on the outcomes that matter most to people. Outcome measurement shifts the focus from outputs to whether care meets people’s needs. It accelerates clinicians’ learning and helps leaders align services with their organisation’s purpose.',
-      what: 'A pivot from asking ‘how are we, as a service provider, doing?’ to asking people and communities ‘how are you doing?’ across a full care pathway. Patient-reported outcome measures (PROMs) capture people’s view of their own health — quality of life, daily functioning, symptoms. Patient-reported experience measures (PREMs) capture their experience of care, focused on comfort and dignity rather than hospitality.',
+      what: 'A pivot from asking ‘how are we, as a service provider, doing?’ to asking people and communities ‘how are you doing?’ across a full care pathway. The outcomes that matter are multi-dimensional, often encompassing levels of suffering, relief from suffering and disruption to life — not just satisfaction with service delivery. Patient-reported outcome measures (PROMs) capture people’s view of their own health — quality of life, daily functioning, symptoms. Patient-reported experience measures (PREMs) capture their experience of care, focused on comfort and dignity rather than hospitality.',
       how: 'Keep it simple: no more than three to five measures. Express outcomes in terms of capability, comfort and calm (the 3 Cs), and involve people and communities in designing them. International Consortium for Health Outcomes Measurement (ICHOM) standard sets can be a useful starting point, simplified to suit your goals.',
       use: 'Use outcomes for learning and improvement at system, clinical and individual level: identifying variation, replicating high-value care and finding inefficiencies. Sharing PROMs and PREMs with people shows them their progress, builds trust and keeps them engaged in reporting.'
     },
@@ -1509,7 +1552,7 @@ const ELEMENTS = {
     ],
     about: {
       why: 'Costing identifies efficiencies, supports strategies to reduce costs and encourages innovation. To know whether an intervention delivers value, you need the costs across the full care pathway.',
-      what: 'The actual cost of the care delivered to a person over a full care pathway — often spread across many providers, the person and their family. Clinical fees are not the cost of care. Costs are direct (consumables, equipment, clinician time) and indirect (shared administration, the person’s travel), to the system, the service and the individual.',
+      what: 'The actual cost of the care delivered to a person over a full care pathway — often spread across many providers, the person and their family or carers. Clinical fees are sometimes confused with the cost of delivering care, but they are an inaccurate estimate of it. Costs are direct (associated directly with patient care, such as consumables and equipment) and indirect (such as the distributed cost of running an administration department, or the person’s travel to and from care), and include costs to the system as well as individual clinical costs.',
       how: 'Link costing to your journey map: cost the resources used at each stage, including the time and skill each task needs. Time-driven activity-based costing (TDABC) does this with two parameters — the capacity cost rate of each resource and the time each activity takes — in seven steps (see the worksheet below).',
       use: 'Gradually build actual-cost methods into existing systems rather than replacing them. Once costs are visible, look for opportunities to consolidate activities, have different people do some activities, or introduce technology.'
     },
@@ -1519,9 +1562,9 @@ const ELEMENTS = {
         html: '<p>TDABC was used to model anaesthetic personnel costs for a high-turnover operating list (mainly breast and melanoma surgery). The costs were used to compare a serial design (anaesthesia induced in the operating room) with a parallel design (induction in adjacent rooms). The parallel design achieved a significant increase in efficiency, at minimal extra cost and without affecting patient safety (Basto et al. 2019).</p>' }
     ],
     resources: [
-      { t: 'Time-driven activity-based costing — Kaplan and Anderson, Harvard Business Review', u: 'https://hbr.org/2004/11/time-driven-activity-based-costing' },
-      { t: 'Activity based funding — Independent Health and Aged Care Pricing Authority', u: 'https://www.ihpa.gov.au/what-we-do/activity-based-funding' },
-      { t: 'Tier 2 Non-Admitted Services Classification — Independent Health and Aged Care Pricing Authority', u: 'https://www.ihpa.gov.au/what-we-do/tier-2-non-admitted-care-services-classification' }
+      { t: 'Time-driven activity-based costing (TDABC) — Robert Kaplan and Steven Anderson, Harvard Business Review', u: 'https://hbr.org/2004/11/time-driven-activity-based-costing' },
+      { t: 'Activity Based Funding — Independent Hospital Pricing Authority (now IHACPA)', u: 'https://www.ihpa.gov.au/what-we-do/activity-based-funding' },
+      { t: 'Tier 2 Non-Admitted Services Classification — Independent Hospital Pricing Authority (now IHACPA)', u: 'https://www.ihpa.gov.au/what-we-do/tier-2-non-admitted-care-services-classification' }
     ] },
 
   e43: { num: '4.3', title: 'Addressing variation',
@@ -1538,7 +1581,7 @@ const ELEMENTS = {
         html: '<p>The 2021 Australian Atlas of Healthcare Variation found that, for people aged 75 and over, the rate of polypharmacy (five or more medicines at once) was six times higher in the highest-rate area than the lowest. Polypharmacy can be appropriate but increases the risk of medicines-related harm. Prescribers and pharmacists are often the focus of deprescribing, but care pathways that support it while maintaining the outcomes that matter to people may involve a broad range of allied health professions.</p>' }
     ],
     resources: [
-      { t: 'Choosing Wisely Australia — implementation kit', u: 'https://www.choosingwisely.org.au/assets/CW2190_Implementation_Kit_INTRODUCTION_v6.pdf' },
+      { t: 'Choosing Wisely Australia 2018 Report', u: 'https://www.choosingwisely.org.au/assets/CW2190_Implementation_Kit_INTRODUCTION_v6.pdf' },
       { t: 'Healthcare variation — Australian Commission on Safety and Quality in Health Care', u: 'https://www.safetyandquality.gov.au/our-work/healthcare-variation' },
       { t: 'Australian Atlas of Healthcare Variation series', u: 'https://www.safetyandquality.gov.au/publications-and-resources/australian-atlas-healthcare-variation-series' },
       { t: 'Allied Health Translating Research into Practice (AH-TRIP) — Queensland Health', u: 'https://www.health.qld.gov.au/clinical-practice/database-tools/translating-research-into-practice-trip/about-us' },
@@ -1551,19 +1594,19 @@ const ELEMENTS = {
     questions: [
       'Who will be part of our care team? People, communities and carers? How will we involve them in the design of our solution?',
       'How will shared goals be developed? What processes will be put in place to facilitate communication and collaboration across disciplines? Services? Sectors? With consumers and their carers and families?',
-      'How do we maximise efficiency within the team? How do we ensure all members of our team work to top of scope? How do we minimise the cost of the care through design?',
+      'How do we maximise efficiency within the team? How do we ensure all members of our team work to top of licence? How do we minimise the cost of the care through design?',
       'How do we include and involve consumers, their carers, and their families in the care team?'
     ],
     about: {
-      why: 'When care shifts from treating conditions to solving people’s needs, teams can address non-clinical needs that otherwise undermine health. Team-based care improves wellbeing and reduces burnout; working to top of scope improves timeliness and access and lowers costs. Design for the right people at the right time — not everyone ‘just in case’.',
+      why: 'When the goal of care shifts to solving people’s needs, care teams can address both clinical needs and the non-clinical needs that, when left unmet, undermine people’s health. Effective team-based care improves health professional wellbeing and satisfaction and reduces burnout, and working to the top of licence improves timeliness and access and reduces costs. Including consumers, carers and family members in the team brings insights beyond narrow clinical perspectives and can improve knowledge and treatment adherence. The team must also be cost-effective: design for the right people at the right time — not everyone ‘just in case’.',
       what: 'Teams of care providers from a diversity of disciplines, with consumers, carers and families, who share a focus on a person’s needs and collective ownership of the goals. They can span settings and sectors, see themselves as an intact team (not people thrown together), and change as people’s needs change.',
       how: 'Consider five factors: clinical governance (how the team works together and resolves conflict, and keeps up with evidence); data (shared, consistent and accessible to consumers); interoperable technology and infrastructure; funding flows; and a shared space for knowledge sharing, including consumers.',
-      use: 'The team’s knowledge of the realities of delivering care is critical to finding efficiencies, letting everyone work to top of scope and making transitions smooth — designing and improving care by learning from experience.'
+      use: 'The team’s knowledge of the realities of delivering care is critical to finding efficiencies, letting everyone work to top of licence and making transitions smooth — designing and improving care by learning from experience.'
     },
     worksheet: 'team',
     boxes: [
       { type: 'partnership', title: 'Partnerships: should your model of care be part of a trial for funding reform?',
-        html: '<p>Funding can create disincentives for change. Activity-based funding works best for predictable, one-off episodes of care. The Independent Health and Aged Care Pricing Authority (IHACPA) has estimated that about 30% of people funded under activity-based funding could benefit from alternative approaches, and has been partnering to trial innovative models of care and funding — at program level (bundled or capitation payments, outcomes-based payments) and system level (blended funding, pooled payment streams). Consider how your VBHC work relates to these pilots.</p>' }
+        html: '<p>Shifting the way we provide care can be challenging when funding mechanisms create disincentives for change. Activity-based funding (ABF), introduced to Australian public hospitals in 2012, has contributed to a more equitable and transparent system of hospital funding, but works best for predictable one-off episodes of care.</p><p>The Independent Health and Aged Care Pricing Authority (IHACPA) identified that around 30% of people funded under ABF could potentially benefit from alternative funding approaches. It was looking to partner to develop and trial innovative models of care and funding reform, at program level (for example, bundled or capitation payments, refinements to ABF, or outcomes-based payments) and system level (for example, blended funding models and pooled payment streams), and was developing the parameters to pilot state- and territory-nominated models of care for 2022–23, to inform the national pricing model. Consider how your VBHC work relates to these pilots.</p>' }
     ],
     resources: [
       { t: 'Enabling person-centred, team-based care: refreshing the blueprint — AHHA', u: 'https://ahha.asn.au/sites/default/files/docs/policy-issue/enabling_person-centred_team-based_care_-_refreshing_the_blueprint.pdf' },
@@ -1640,9 +1683,9 @@ const SEGMENT_TRAITS = [
 ];
 // The framework's tip: make sure your population segment is…
 const SEGMENT_TESTS = [
-  { id: 'identifiable', title: 'Identifiable', desc: 'Its attributes are clearly defined.' },
-  { id: 'meaningful', title: 'Meaningful', desc: 'It represents a meaningful portion of the population, in which implementing VBHC change will create efficiencies and economies of scale.' },
-  { id: 'actionable', title: 'Responsive and actionable', desc: 'It is able to benefit in response to health care service interventions.' }
+  { id: 'identifiable', title: 'Identifiable', desc: 'With attributes clearly defined.' },
+  { id: 'meaningful', title: 'Meaningful', desc: 'Representing a meaningful portion of the population in which implementing VBHC change will create efficiencies and economies of scale.' },
+  { id: 'actionable', title: 'Responsive and actionable', desc: 'Able to benefit in response to health care service interventions.' }
 ];
 const TEST_ANSWERS = [['yes', 'Yes'], ['partly', 'Partly'], ['no', 'Not yet']];
 
@@ -1660,7 +1703,7 @@ const ASKS = ['Project approval', 'Funding', 'Staff time or personnel', 'Space',
 
 // Political landscape factors (1.3.3, “How is it developed?”)
 const LANDSCAPE_TYPES = ['Political system and policies', 'Regulatory environment', 'Reform agenda or strategy', 'Public or community opinion',
-  'Other players in the VBHC space', 'Partnership opportunity', 'Funding structures', 'Local employment, development or infrastructure', 'Other'];
+  'Other players in the VBHC space', 'Partnership opportunity', 'Funding structures', 'Global political context', 'Local employment, development or infrastructure', 'Other'];
 const LANDSCAPE_EFFECTS = [['enabler', 'Enabler'], ['barrier', 'Barrier'], ['both', 'Both'], ['unclear', 'Not sure yet']];
 
 const STATUSES = [['none', 'Not started'], ['progress', 'In progress'], ['done', 'Done'], ['na', 'Not applicable']];
@@ -1671,13 +1714,13 @@ const CASES = [
   { title: 'Understanding the care pathway and shared needs in lymphoedema screening', where: 'Metro North HHS',
     d1: 'A Ministerial complaint about access to lymphoedema screening showed that services were mainly close to inner-city Brisbane hospitals. A population segment — people at risk of or with lymphoedema living outside inner-city Brisbane — had to travel long distances, creating a poor patient experience.',
     d2: 'The pathway was mapped from the evidence base, recognising the constraints of a public health context. Surveys and focus groups explored shared needs, with public hospitals, NGOs, general practices and the PHN; private providers were invited to map the pathway from what was known of existing services. The map was presented back to confirm it and talk through solutions, and multidisciplinary meetings produced a draft pathway showing where consumers would enter. Within 12 months, person-centred pathways connected existing services so people could get care closer to home.',
-    d3: 'Collaboration and a common goal from the very beginning created a problem-solving culture in the integrated team of consumers, NGOs, private providers, the PHN and the HHS.',
+    d3: 'Collaboration and a common goal from the very beginning created a problem-solving culture in the integrated team of consumers, NGOs, private providers, PHNs and the HHS.',
     d4: 'Indicators included: risk assessment reported at multidisciplinary meetings after surgery; timely communication of risk to patients; GP access to information and attendance at training; monitoring of patients in the pathway; use of the electronic decision-making tool; NGO lymphoedema activity; and fewer unnecessary admissions from poorly or late managed lymphoedema. Patient outcomes were planned at 4 weeks and 3, 6, 9 and 12 months after surgery: symptoms, awareness of the pathway, whether and by whom risk had been reviewed, access to monitoring (preferred provider, location, distance) and satisfaction, using a standardised tool.',
     d5: 'A new service with recurrent funding was established at Redcliffe Hospital, with fixed-term funding for an extra clinician to build community providers’ capability. Education resources and electronic decision-making tools were built into GP and practice nurse software, and electronic pathways were created for patients using NGO and private providers, from referral documents to screening tools.',
     challenges: 'Engaging consumers early and throughout created a clear person-centred pathway to meet identified needs.',
     lessons: 'Consumers will help shape a project in ways you cannot anticipate — don’t have preconceived ideas about their contribution. Map and engage health providers early. Keep decision makers and funding bodies informed throughout: this project was funded for recurrent service as a result.' },
   { title: 'Creating an audiology workforce ready for change', where: 'Statewide newborn hearing follow-up',
-    d1: 'About 3% of newborns have risk factors for post-natal hearing loss and are referred for follow-up audiology at 6 months, 9 months and 3.5 years — about 1,800 referrals a year. Of 22,000 children referred over 17 years, only 200 cases of hearing loss were found, while waitlists grew and the failure-to-attend rate reached 33%.',
+    d1: 'About 3% of newborns have risk factors for post-natal hearing loss. They are referred for follow-up audiology at 6 months (children with a syndrome or craniofacial anomaly), 9 months and 3.5 years; the program has run for 17 years, with about 1,800 referrals a year. Of the 22,000 children referred, only 200 cases of hearing loss were found at follow-up. The costs were high, and many children were kept in the system when care was not clinically necessary, creating long waitlists and a 33% failure-to-attend rate.',
     d2: 'Identifying this population segment led to an examination of the care pathway, to find points where alternative processes could streamline care and improve outcomes.',
     d3: 'The proposal met resistance, revealing a broad cultural issue around medicolegal risk appetite. Over a decade, clinician leaders prioritised data capture, education and awareness raising, listened to concerns about scope, risk and job satisfaction, and shared data in audiology and leadership forums. The workforce now accepts a pilot screening model, which has received a VBHC grant.',
     d4: 'The existing model was not targeting the outcomes that mattered to children and families — in particular ‘outcomes of calm’, the ability to live a normal life while getting care. High failure-to-attend rates showed the unmeasured burden of transport, cost and time for families of children with no hearing loss.',
@@ -1695,7 +1738,7 @@ const CASES = [
     d1: 'The Aged Care Assessment Team (ACAT) noticed very few referrals from the Aboriginal community of Yarrabah despite many ageing community members with complex needs. ACAT defined the aged community of Yarrabah as its population segment, within its sphere of influence, and built trust through a formal partnership with the local Aboriginal Medical Service, Gurriny Yealamucka, and a close working relationship with Mutkin Aged and Community Care.',
     d2: 'ACAT and Gurriny reviewed what wasn’t working through formal and informal consultation, case conferencing and stakeholder meetings. Shared needs included: the aged care system and referral process were poorly understood and confusing; referrals were few and often cancelled; there were no working relationships between ACAT and Yarrabah services; clients could not access care they had been approved for; and letters about home care packages often never arrived. Trust could not be built in a single visit, and Indigenous health workers — partnering at every point and often leading — provided cultural brokerage.',
     d3: 'The three services had worked mostly in isolation. Fortnightly case conferences and an assessor’s consistent presence strengthened relationships and shared goals, with an openness to learning from each other. All three organisations shared the leadership.',
-    d4: 'Referrals rose from 13 in 2019 to 44 in 2021, from a wider range of sources. In 2019, 8 people were approved for a home care package and none accessed it; in 2021, 20 were approved, 5 were receiving their package and 4 were awaiting services. Measuring access after assessment — not routinely reviewed — was key. Formal co-design of outcome measures was beyond the project’s scope, but community members reported better outcomes.',
+    d4: 'Referrals rose from 13 in 2019 to 44 in 2021, from a wider range of sources. In 2019, 8 people were approved for a home care package and none accessed it; in 2021, 20 were approved, 5 were receiving their package and 4 were awaiting services. As well as the timeliness KPIs set by the Commonwealth, the model measured access to support after assessment, which is not routinely reviewed by ACAT or the Commonwealth. The project’s scope did not allow formal co-design and measurement of outcome indicators beyond access, but informal reports from the community and health services suggest people feel their outcomes have improved.',
     d5: 'Together they co-designed a flexible model: an introductory home visit led by the Indigenous health worker to explain the assessment and gain consent (with family present); a follow-up visit to explain the outcome; a six-month follow-up to support uptake of care; correspondence sent via the Aboriginal Medical Service; fortnightly case conferences between ACAT, Gurriny and Mutkin; and a dedicated ACAT assessor based at Gurriny.',
     challenges: 'Enablers: the assessor’s experience with discrete Aboriginal communities and willingness to learn; executive buy-in and ‘permission to lead’; and the openness of Gurriny and Mutkin. Challenges: succession planning for the assessor role, and COVID-19 restrictions and competing priorities.',
     lessons: 'Co-design and inter-agency collaboration from the outset. Let the model evolve with feedback and ongoing evaluation.' },
@@ -1703,8 +1746,8 @@ const CASES = [
     d1: 'Because of their sphere of influence — system knowledge, relationships across services and sectors, familiarity with governance and an understanding of vaccine supply logistics — the Director of Pharmacy was asked to lead the North West vaccination response.',
     d2: 'The response drew on IT, communications, logistics, health promotion, Aboriginal and Torres Strait Islander communities, PHNs, state and federal government, disaster management and private industry. The team mapped the needs of different population segments and the existing services, relationships and partnerships that could be leveraged.',
     d3: 'Buy-in was hard at first. An endorsed framework gave the team ‘permission to lead’, but the wider workforce engaged only when executives made their support highly visible: within an hour of hearing about the difficulties, they had every senior leader in a room for a briefing.',
-    d4: 'Vaccination rates were tracked. The urgency of the rollout did not allow deeper consideration of the outcomes that mattered to people — a shift to measuring ‘how are you doing?’ that is still in its infancy.',
-    d5: 'Different models for different segments: First Nations communities (leaders and community-controlled organisations embedded early, plus incentive policies — a 12% rise in vaccinations in one fortnight, and Mt Isa’s First Nations population became the region’s most vaccinated); people experiencing homelessness (outreach to shelters and the street); remote communities (cross-sector teams in local hubs, community events with former Cowboys players, and the Royal Flying Doctor Service for very remote areas); and a central clinic at the Mt Isa Civic Centre.',
+    d4: 'Vaccination rates were the primary outcome tracked. The urgency of the rollout did not allow time to consider in more depth the outcomes that mattered to people and communities. Measuring ‘how are you doing?’ rather than ‘how are we doing?’ is a significant shift that is still in its infancy in the Australian health system.',
+    d5: 'Different models for different segments: First Nations communities (leaders and community-controlled organisations embedded early, plus incentive policies — a 12% rise in First Nations vaccinations in one fortnight, and Mt Isa’s First Nations population became the most vaccinated in North West Queensland); people experiencing homelessness (outreach to shelters and the street); remote communities (cross-sector teams in local hubs, community events with former Cowboys players, and the Royal Flying Doctor Service for very remote areas); and metro communities (a central clinic at the Mt Isa Civic Centre).',
     challenges: 'Early communication and partnerships built a large integrated team with a common goal, and longstanding partnerships with trusted community services could be activated quickly — the HHS delivered 75% of the region’s vaccinations.',
     lessons: 'Don’t get overwhelmed with perfection — starting is more important.' }
 ];
@@ -1777,8 +1820,8 @@ const COMMS_PRINCIPLES = [
 ];
 const THREE_CS = [
   { id: 'capability', title: 'Capability', desc: 'Functional status: people’s ability to do the things they want to do, during and after care.' },
-  { id: 'comfort', title: 'Comfort', desc: 'Relief from physical and emotional suffering throughout the journey of care.' },
-  { id: 'calm', title: 'Calm', desc: 'The ability to live normally while accessing care: freedom from the chaos of the health system.' }
+  { id: 'comfort', title: 'Comfort', desc: 'Relief from physical and emotional suffering throughout the journey of care: lessening the burden of disease or injury.' },
+  { id: 'calm', title: 'Calm', desc: 'The ability to live normally while accessing care: freedom from the stress caused by the chaos of the health system.' }
 ];
 const MEASURE_CATS = [['', 'Choose'], ['capability', 'Capability'], ['comfort', 'Comfort'], ['calm', 'Calm'], ['experience', 'Experience of care'], ['other', 'Other']];
 const MEASURE_TYPES = [['', 'Choose'], ['prom', 'PROM'], ['prem', 'PREM'], ['clinical', 'Clinical outcome'], ['process', 'Process or activity'], ['cost', 'Cost']];
@@ -1816,7 +1859,82 @@ const QUAD_AIMS = [
   { id: 'cost', title: 'Cost and sustainability', desc: 'Reducing the per capita cost of health care.' },
   { id: 'provider', title: 'Experience of providing care', desc: 'Improving the experience of providing care.' }
 ];
-const EVAL_PERSPECTIVES = ['Consumers', 'Carers and families', 'Health professionals', 'Executives', 'Communities', 'Partner organisations'];
+const EVAL_PERSPECTIVES = ['Consumers', 'Carers and families', 'Health professionals', 'Executives', 'Communities'];
+
+// ---- About value-based health care: Appendix 3 of the framework, the tip from its
+// Introduction, and "The role of allied health in value-based health care" (Table 1).
+const VBHC_ABOUT = {
+  intro: [
+    'VBHC is a global movement that offers an approach to the organisation of health care systems that provides value for people and communities. It is a person-centred way to support health care decision making and system transformation, with the aim to improve both health outcomes and the experience of care across a full care pathway for people, service providers, communities, health professionals and populations.',
+    'The classic definition of VBHC is based on work led by Professors Michael Porter and Elizabeth Teisberg at the Harvard Business School. They conceptualised value in health care as ‘the measured improvement in a patient’s health outcomes for the cost of achieving that improvement’ (Porter and Teisberg 2006), which may be reflected in terms of the value equation.',
+    'In the Australian universal health care system, embedded principles of equity and public value highlight the need to consider community and population health, as well as social, environmental and cultural outcomes, in the conceptualisation of VBHC.'
+  ],
+  equation: { top: 'Improvements in outcomes that matter to people and communities', bottom: 'Direct costs and indirect costs' },
+  stagesLead: 'In 2020, Teisberg, Wallace and O’Hara published a strategic framework for value-based health care implementation, which outlined five stages of implementation:',
+  stages: ['Understand the shared health needs of patients', 'Design solutions to improve health outcomes', 'Integrate learning teams', 'Measure health outcomes and costs', 'Expand partnerships'],
+  stagesAfter: 'This research informed the development of the Allied Health Framework for Value-Based Health Care, providing a scaffolding upon which elements have been added and adapted to reflect the context and experiences of allied health in Queensland.',
+  valueLead: 'The term ‘value’ can mean different things to different people and organisations, including:',
+  valueItems: ['cost minimisation', 'cost effectiveness', 'embedding values in health care (for example, equity or ‘health as a human right’)', 'triple, quadruple or quintuple aim', 'patient experience or satisfaction', 'an approach to quality improvement', 'reducing low value care', 'a focus on prevention', 'team-based care.'],
+  valueAfter: 'VBHC encompasses all of these elements, and more. It is not about throwing out the processes and approaches that we already use; it is about shifting what we do to produce the best outcomes for people and communities with the resources we have available to us.',
+  alliedHealth: [
+    'VBHC is not a new phenomenon within allied health service delivery, as Table 1 highlights. The framework was developed to address the need for a structured approach to allied health VBHC implementation, based on what health professionals and consumers need and expect.',
+    'Allied health professionals provide a broad range of services across the aged care, mental health, disability and health sectors to improve the health and wellbeing of people and communities. They are an essential element of the Australian health system and an important partner in the development of an integrated health system that improves health outcomes and promotes value.',
+    'Scott (2014) proposed 10 clinician-driven strategies to maximise value in the Australian health care system. Against these, Lizarondo et al. identified examples of how allied health can contribute to strategies that not only improve the quality of outcomes, but offer innovative solutions for sustainable health care in maximising value.'
+  ],
+  resources: [
+    { t: 'Redefining health care: Creating value-based competition on results — Porter and Teisberg (2006)', d: 'Harvard Business School Press' },
+    { t: 'Defining and Implementing Value-Based Health Care: A Strategic Framework — Teisberg, Wallace and O’Hara (2020)', u: 'https://journals.lww.com/academicmedicine/Fulltext/2020/05000/Defining_and_Implementing_Value_Based_Health_Care_.14.aspx' },
+    { t: 'The Roadmap for Implementing Value-Based Healthcare in European University Hospitals: Consensus Report and Recommendations — Cossio-Gil et al. (2021)', u: 'https://www.valueinhealthjournal.com/article/S1098-3015(21)03180-6/fulltext#fig1' },
+    { t: 'The quadruple aim: care, health, cost and meaning in work — Sikka, Morath and Leape (2015)', u: 'https://qualitysafety.bmj.com/content/qhc/24/10/608.full.pdf' },
+    { t: 'What is value-based health care?', d: 'a short introductory video to the concept of VBHC', u: 'https://youtu.be/RpSunN_PD_w' },
+    { t: 'Value in Healthcare: A case for change', d: 'a short explainer video developed by the World Economic Forum', u: 'https://www.youtube.com/watch?v=Fm114fFyFzk' }
+  ]
+};
+// Table 1. Allied health examples of maximising value: the clinician-driven strategies
+// (Scott 2014), with allied health examples (adapted from Lizarondo et al. 2015).
+const AH_VALUE_TABLE = [
+  { strategies: ['Minimise errors in diagnosis'], examples: [
+    'dietitians undertaking accurate evaluation of gastrointestinal disturbances to minimise expensive investigations such as CT, endoscopy and colonoscopy',
+    'physiotherapists and occupational therapists conducting assessment (for example, of muscle tone) to ensure treatment is accurately targeted to the affected site, avoiding unnecessary damage to non-affected sites',
+    'social workers undertaking comprehensive psychosocial assessment to identify at-risk patients and refer appropriately; timely referral can reduce unnecessary hospitalisation'] },
+  { strategies: ['Discontinue low or no value practices that provide little value or cause harm', 'Defer the use of unproven interventions'],
+    lead: 'These strategies have been associated with delivering evidence-based techniques, and therefore discontinuing the use of the following interventions or strategies:', examples: [
+    'electrophysical agents in conditions where there is no supporting evidence of effectiveness',
+    'low-bacteria diet in immunocompromised patients',
+    'inappropriate debridement of ischaemic wounds',
+    'inappropriate referrals'] },
+  { strategies: ['Select care option according to comparative cost-effectiveness'], examples: [
+    'promoting self-management (to decrease dependence on the health system) to replace active management from practitioners',
+    'supporting allied health extended scope of practice (to decrease use of medical consultancy time)',
+    'providing rehabilitation care on an ambulatory basis, which can replace inpatient care',
+    'pre-rehabilitating patients with osteoarthritis (who may not then need surgical intervention or, if requiring surgery, may have more positive outcomes)'] },
+  { strategies: ['Target clinical interventions to those which have the greatest benefit'], examples: [
+    'specialised roles within individual disciplines; for example, comorbidity specialists or enhanced roles in neuropsychology for mental health (such as substance misuse and dementia)',
+    'screening and early intervention; for example, timely access to audiology services, or screening and early intervention for children with speech and language disorders during early childhood'] },
+  { strategies: ['Adopt a more conservative approach nearing end of life'], examples: [
+    'counselling support offered by social workers and psychologists can help patients and their carers make informed decisions about commencing or continuing active treatments',
+    'physiotherapists and occupational therapists working collaboratively to assist with patients’ rehabilitation needs (for example, pain management, a graded exercise plan, home needs assessment), optimising function and quality of life and achieving safe home or community care',
+    'providing support to patients and their families nearing end of life'] },
+  { strategies: ['Actively involve patients in shared decision making and self-management'], examples: [
+    'discussing goals with patients and actively supporting them in their decision making; setting client-centred goals; family meetings',
+    'ensuring capacity assessments have been conducted thoroughly (assessing people’s right to choose)',
+    'social workers providing psychosocial support and advocacy regarding patients’ right to decision making'] },
+  { strategies: ['Minimise day-to-day operational waste'], examples: [
+    'considering alternative workforce models that incorporate the use of allied health assistants',
+    'facilitating early allied health input (for example, timely swallowing assessment; early screening and assessment of nutritional issues)',
+    'improving coordination of care and communication between professionals to minimise overlap in services',
+    'use of group interventions (for example, a group weight loss program)'] },
+  { strategies: ['Convert health care institutions into rapidly learning organisations'], examples: [
+    'implementing educational interventions (for example, journal clubs, in-service education, grand rounds, conference attendance, continuing professional development); interprofessional education',
+    'improving resources to support educational activities for staff (for example, grants)'] },
+  { strategies: ['Advocate for integrated patient care across all clinical settings'], examples: [
+    'earlier access to allied health services',
+    'improving structures (policies, procedures, support) for integrated care (for example, comprehensive care plans)',
+    'improving the process for discharge planning',
+    'improving communication in the team',
+    'providing multidisciplinary interventions for a holistic approach',
+    'case coordination'] }
+];
 
 // ============================================================================
 // PLANNER
@@ -1857,7 +1975,57 @@ function blankState() {
     }
   };
 }
-// Fill any gaps in a saved or imported plan from the blank shape, keeping known keys only.
+// What each saved value may be. Text is free (and escaped wherever it is shown); a choice
+// must be one of the planner's own options. Anything else in a saved or opened file is
+// dropped, so a damaged or hand-edited project file cannot break a page or add markup to it.
+const TEXT = 'text', BOOL = 'bool', DATE = 'date';
+const ids = list => list.map(x => Array.isArray(x) ? x[0] : x.id);
+// (The $ names mark these rules apart from the plan's own field names, such as "rows".)
+const oneOf = list => ({ $oneOf: list }), listOf = list => ({ $listOf: list });
+const mapOf = (keys, shape) => ({ $keys: keys, $shape: shape }), rowsOf = shape => ({ $rows: shape });
+const SCHEMA = {
+  created: DATE, updated: DATE,
+  project: { name: TEXT, lead: TEXT, service: TEXT, problem: TEXT, team: TEXT, start: TEXT },
+  answers: mapOf(ALL_ELEMENTS.flatMap(id => ELEMENTS[id].questions.map((q, i) => `${id}-${i}`)), TEXT),
+  status: mapOf(ALL_ELEMENTS, oneOf(ids(STATUSES))),
+  ws: {
+    consumers: { levels: mapOf(ids(PARTNER_LEVELS), TEXT), rows: rowsOf({ who: TEXT, how: TEXT, stages: listOf(PROJECT_STAGES) }) },
+    segment: { desc: TEXT, traits: listOf(SEGMENT_TRAITS), size: TEXT, unmet: TEXT, data: TEXT, tests: mapOf(ids(SEGMENT_TESTS), { v: oneOf(ids(TEST_ANSWERS)), note: TEXT }) },
+    sphere: { level: oneOf(ids(SPHERES)) },
+    leaders: { rows: rowsOf({ who: TEXT, where: TEXT, type: oneOf(['formal', 'informal']), how: TEXT }) },
+    sixp: { p: mapOf(ids(SIX_PS), { note: TEXT, state: oneOf(ids(P_STATES)) }), sponsor: TEXT, asks: listOf(ASKS), askDetail: TEXT },
+    landscape: { rows: rowsOf({ factor: TEXT, type: oneOf(LANDSCAPE_TYPES), effect: oneOf(ids(LANDSCAPE_EFFECTS)), response: TEXT }) },
+    engage: { methods: listOf(ENGAGE_METHODS.map(m => m.title)), safety: TEXT, rows: rowsOf({ who: TEXT, method: oneOf([...ids(ENGAGE_METHODS), 'other']), when: TEXT, loop: TEXT }) },
+    journey: { start: TEXT, end: TEXT, rows: rowsOf({ step: TEXT, who: TEXT, time: TEXT, type: oneOf(ids(TOUCH_TYPES)), changed: TEXT, different: TEXT }), checks: listOf(JOURNEY_CHECKS) },
+    culture: { strengths: TEXT, barriers: TEXT, strategies: listOf(CULTURE_STRATEGIES), plan: TEXT, line: TEXT },
+    change: { p: mapOf(ids(CHANGE_PRINCIPLES), TEXT), model: oneOf(ids(CHANGE_MODELS)), pitch: mapOf(ids(PITCH_PROMPTS), TEXT) },
+    comms: { checks: listOf(COMMS_PRINCIPLES.map(c => c.title)), rows: rowsOf({ audience: TEXT, message: TEXT, messenger: TEXT, channels: TEXT, timing: TEXT }), objections: TEXT },
+    outcomes: { rows: rowsOf({ measure: TEXT, cat: oneOf(ids(MEASURE_CATS)), type: oneOf(ids(MEASURE_TYPES)), tool: TEXT, when: TEXT, codesign: oneOf(ids(CODESIGNED)) }), feedback: TEXT },
+    costs: { steps: listOf(TDABC_STEPS.map((s, i) => String(i + 1))), rows: rowsOf({ activity: TEXT, resource: TEXT, minutes: TEXT, rate: TEXT }), indirect: TEXT, partners: TEXT },
+    variation: { t: mapOf(ids(VARIATION_TASKS), { note: TEXT, done: BOOL }), findings: TEXT },
+    team: { rows: rowsOf({ who: TEXT, kind: oneOf(ids(TEAM_KINDS)), discipline: TEXT, contribution: TEXT, when: TEXT }), goals: TEXT, f: mapOf(ids(TEAM_FACTORS), TEXT) },
+    risk: { rows: rowsOf({ risk: TEXT, pathway: oneOf(ids(RISK_PATHWAYS)), l: oneOf(ids(LIKELIHOOD)), c: oneOf(ids(CONSEQUENCE)), treatment: TEXT, owner: TEXT }), disinvest: TEXT },
+    evaluation: { q: mapOf(ids(QUAD_AIMS), { success: TEXT, measures: TEXT, source: TEXT }), questions: TEXT, perspectives: listOf(EVAL_PERSPECTIVES), partner: TEXT, share: TEXT }
+  }
+};
+function clean(v, schema = SCHEMA) {
+  const isObj = x => !!x && typeof x === 'object' && !Array.isArray(x);
+  if (schema === TEXT) return typeof v === 'string' ? v : typeof v === 'number' && Number.isFinite(v) ? String(v) : '';
+  if (schema === BOOL) return v === true;
+  if (schema === DATE) return typeof v === 'string' && !Number.isNaN(Date.parse(v)) ? v : null;
+  if (schema.$oneOf) return schema.$oneOf.includes(v) ? v : '';
+  if (schema.$listOf) return Array.isArray(v) ? [...new Set(v.filter(x => schema.$listOf.includes(x)))] : [];
+  if (schema.$rows) return Array.isArray(v) ? v.filter(isObj).map(r => clean(r, schema.$rows)) : [];
+  const out = {};
+  if (!isObj(v)) return out;
+  // Keep the keys in their saved order, so a plan that is opened and saved again is unchanged.
+  for (const k of Object.keys(v)) {
+    const s = schema.$keys ? (schema.$keys.includes(k) ? schema.$shape : null) : schema[k];
+    if (s) out[k] = clean(v[k], s);
+  }
+  return out;
+}
+// Fill any gaps in a saved or imported plan from the blank shape, then clean it.
 function normalise(saved) {
   const base = blankState();
   const merge = (b, s) => {
@@ -1870,9 +2038,7 @@ function normalise(saved) {
     }
     return (typeof s === typeof b || b === null) && s !== undefined ? s : b;
   };
-  const st = merge(base, saved);
-  st.app = 'vbhc-planner'; st.version = 1;
-  return st;
+  return { app: 'vbhc-planner', version: 1, ...clean(merge(base, saved)) };
 }
 function load() {
   try {
@@ -1892,6 +2058,7 @@ function persist() {
   saveTimer = setTimeout(writeStore, 300);
 }
 function writeStore() {
+  saveTimer = null;
   const warn = $('#storage-warning');
   try {
     localStorage.setItem(STORE_KEY, JSON.stringify(state));
@@ -2118,7 +2285,7 @@ const WS = {
         <div class="qld__callout ahlap-link">
           <h4 class="qld__callout__heading">Reflect on your own leadership</h4>
           <p>The Allied Health Leadership and Advancing Practice Framework uses the same four spheres. Its
-          <a href="${AHLAP_TOOL_URL}">self-assessment tool</a> helps you and your supervisor identify the stage you are working within and plan your development.</p>
+          <a href="${AHLAP_TOOL_URL}" target="_blank" rel="noopener">self-assessment tool<span class="visually-hidden"> (opens in a new tab)</span></a> helps you and your supervisor identify the stage you are working within and plan your development.</p>
         </div>`;
     },
     summary() {
@@ -2162,7 +2329,7 @@ const WS = {
       const cards = SIX_PS.map((p, i) => {
         const v = w.p[p.id] || {};
         return `
-        <div class="ws-card sixp-card" data-p-state="${v.state || 'none'}">
+        <div class="ws-card sixp-card" data-p-state="${esc(v.state || 'none')}">
           <div class="sixp-head"><span class="sixp-num" aria-hidden="true">${i + 1}</span><h5>${esc(p.title)}</h5></div>
           <p class="hint">${esc(p.desc)}</p>
           ${field(`p-${p.id}`, esc(p.prompt), `ws.sixp.p.${p.id}.note`, { rows: 3 })}
@@ -2315,7 +2482,7 @@ const TEAM_COLS = [
   { key: 'who', label: 'Team member (role)', type: 'text', w: '20%' },
   { key: 'kind', label: 'Member type', type: 'select', w: '15rem', options: TEAM_KINDS },
   { key: 'discipline', label: 'Discipline, service or sector', type: 'text', w: '18%' },
-  { key: 'contribution', label: 'Contribution, working to top of scope', type: 'area' },
+  { key: 'contribution', label: 'Contribution, working to top of licence', type: 'area' },
   { key: 'when', label: 'When they are needed', type: 'text', w: '11rem' }
 ];
 const riskScore = r => num(r.l) * num(r.c);
@@ -2375,7 +2542,7 @@ Object.assign(WS, {
       const w = state.ws.journey;
       if (!w.rows.length) return '<p class="hint">Your touch points will appear here as a journey.</p>';
       const short = s => { s = String(s || '').trim(); return s.length > 60 ? s.slice(0, 57) + '…' : s || '—'; };
-      return `<span class="js-end">${esc(short(w.start) === '—' ? 'Start' : short(w.start))}</span><ol>${w.rows.map((r, i) => `<li class="js-step js-${r.type || 'none'}"><span class="js-num">${i + 1}</span><span class="js-text">${esc(short(r.step))}</span>${r.type === 'pain' || r.type === 'gain' ? `<span class="js-type">${r.type === 'pain' ? 'Pain' : 'Gain'}</span>` : ''}</li>`).join('')}</ol><span class="js-end">${esc(short(w.end) === '—' ? 'End' : short(w.end))}</span>`;
+      return `<span class="js-end">${esc(short(w.start) === '—' ? 'Start' : short(w.start))}</span><ol>${w.rows.map((r, i) => `<li class="js-step js-${esc(r.type || 'none')}"><span class="js-num">${i + 1}</span><span class="js-text">${esc(short(r.step))}</span>${r.type === 'pain' || r.type === 'gain' ? `<span class="js-type">${r.type === 'pain' ? 'Pain' : 'Gain'}</span>` : ''}</li>`).join('')}</ol><span class="js-end">${esc(short(w.end) === '—' ? 'End' : short(w.end))}</span>`;
     },
     update() { const s = $('#journey-strip'); if (s) s.innerHTML = this.strip(); },
     add: () => state.ws.journey.rows.push({ step: '', who: '', time: '', type: '', changed: '', different: '' }),
@@ -2685,13 +2852,28 @@ function aboutHTML(e) {
     </div></details>`;
 }
 function boxHTML(b) {
+  if (b.type === 'ahvalue') return `<details class="acc ahv-box"><summary><span class="acc-kicker">From the framework</span> <span class="acc-title">Show the value allied health brings</span></summary>
+    <div class="acc-body"><p>Engaging with executives is a chance to highlight the benefits of allied health skills and leadership. The framework gives examples of how
+    allied health contributes to clinician-driven strategies for maximising value.</p>${ahValueTableHTML()}</div></details>`;
   if (b.type === 'case') return `<details class="acc case"><summary><span class="acc-kicker">Case study</span> <span class="acc-title">${esc(b.title)}</span></summary><div class="acc-body">${b.html}</div></details>`;
   return `<div class="qld__callout box-${b.type}"><h4 class="qld__callout__heading">${esc(b.title)}</h4>${b.html}</div>`;
 }
+const newTab = '<span class="visually-hidden"> (opens in a new tab)</span>';
 function resourcesHTML(list) {
+  const item = r => `<li>${r.u ? `<a href="${esc(r.u)}" target="_blank" rel="noopener">${esc(r.t)}${newTab}</a>` : `<span class="res-title">${esc(r.t)}</span>`}` +
+    `${r.d ? ` &mdash; ${esc(r.d)}` : ''}${r.note ? ` <span class="hint">(${esc(r.note)})</span>` : ''}</li>`;
   return `<details class="acc resources"><summary><span class="acc-title">Useful resources</span> <span class="hint">(${list.length})</span></summary>
-    <div class="acc-body"><ul>${list.map(r => `<li><a href="${esc(r.u)}" target="_blank" rel="noopener">${esc(r.t)}</a>${r.note ? ` <span class="hint">(${esc(r.note)})</span>` : ''}</li>`).join('')}</ul>
+    <div class="acc-body"><ul>${list.map(item).join('')}</ul>
     <p class="hint">Links as published in the framework (August 2022).</p></div></details>`;
+}
+// Table 1 of the framework, as a list of strategies and examples (it reads better than a
+// two-column table on a phone). Two strategies share one set of examples, as in the PDF.
+function ahValueTableHTML() {
+  return `<figure class="ahv">
+    <figcaption>Table 1. Allied health examples of maximising value</figcaption>
+    <div class="ahv-head" aria-hidden="true"><span>Clinician-driven strategies for maximising value (Scott 2014)</span><span>Allied health examples (adapted from Lizarondo et al. 2015)</span></div>
+    <dl class="ahv-list">${AH_VALUE_TABLE.map(r => `<div class="ahv-row">${r.strategies.map(s => `<dt>${esc(s)}</dt>`).join('')}<dd>${r.lead ? `<p>${esc(r.lead)}</p>` : ''}<ul>${r.examples.map(x => `<li>${esc(x)}</li>`).join('')}</ul></dd></div>`).join('')}</dl>
+  </figure>`;
 }
 function statusSelect(id) {
   return `<div class="el-status"><label class="qld__label" for="st-${id}">Status</label>
@@ -2699,7 +2881,7 @@ function statusSelect(id) {
 }
 function elementHTML(id) {
   const e = ELEMENTS[id];
-  return `<section class="el" id="el-${id}" data-el="${id}" data-status-now="${statusOf(id)}" aria-labelledby="h-${id}">
+  return `<section class="el" id="el-${id}" data-el="${id}" data-status-now="${esc(statusOf(id))}" aria-labelledby="h-${id}">
     <div class="el-head">
       <h3 id="h-${id}" tabindex="-1"><span class="el-num">${e.num}</span> ${esc(e.title)}</h3>
       ${statusSelect(id)}
@@ -2723,7 +2905,7 @@ function partnershipBox() {
     mid-level managers do not, and longstanding relationships they can draw on for you and your initiative.</p>
     <p><strong>Health Justice Partnerships</strong> connect health professionals with legal services, to address problems such as poor housing, fines and debt,
     or violence, abuse and neglect, which affect health but whose solutions sit outside the health system.
-    <a href="https://www.healthjustice.org.au/hjp/health-justice-partnerships-in-australia/" target="_blank" rel="noopener">Health Justice Partnerships in Australia</a>.</p>
+    <a href="https://www.healthjustice.org.au/hjp/health-justice-partnerships-in-australia/" target="_blank" rel="noopener">Health Justice Partnerships in Australia${newTab}</a>.</p>
   </div>`;
 }
 function sphereIntroHTML() {
@@ -2817,8 +2999,32 @@ function refreshProgress() {
 }
 
 // ---------------------------------------------------------------- overview
+function aboutVbhcHTML() {
+  const a = VBHC_ABOUT, eq = a.equation;
+  return `<h2 id="about-vbhc-title">About value-based health care</h2>
+    <div class="split about-split">
+      <div>${a.intro.map(p => `<p>${esc(p)}</p>`).join('')}</div>
+      <figure class="value-eq">
+        <div class="veq" role="img" aria-label="${esc(`Value equals ${eq.top.toLowerCase()}, divided by ${eq.bottom.toLowerCase()}`)}">
+          <span class="veq-word">Value</span><span class="veq-sign">=</span>
+          <span class="veq-frac"><span class="veq-top">${esc(eq.top)}</span><span class="veq-bottom">${esc(eq.bottom)} <span class="veq-dollar">$</span></span></span>
+        </div>
+        <figcaption class="hint">The value equation (Figure 3 of the framework)</figcaption>
+      </figure>
+    </div>
+    <div class="qld__callout box-tip about-tip">
+      <h3 class="qld__callout__heading">Tip: what does &lsquo;value&rsquo; mean?</h3>
+      <p>${esc(a.valueLead)}</p><ul class="two-col-list">${a.valueItems.map(i => `<li>${esc(i)}</li>`).join('')}</ul><p>${esc(a.valueAfter)}</p>
+    </div>
+    <details class="acc"><summary><span class="acc-title">Five stages of VBHC implementation</span></summary>
+      <div class="acc-body"><p>${esc(a.stagesLead)}</p><ol>${a.stages.map(s => `<li>${esc(s)}</li>`).join('')}</ol><p>${esc(a.stagesAfter)}</p></div></details>
+    <details class="acc"><summary><span class="acc-title">The role of allied health in value-based health care</span></summary>
+      <div class="acc-body">${a.alliedHealth.map(p => `<p>${esc(p)}</p>`).join('')}${ahValueTableHTML()}</div></details>
+    ${resourcesHTML(a.resources)}`;
+}
 function renderHome() {
   $('#wheel-holder').innerHTML = wheelSVG();
+  if (!$('#about-vbhc').childElementCount) $('#about-vbhc').innerHTML = aboutVbhcHTML();
   $('#domain-grid').innerHTML = DOMAINS.map(d => `
     <li class="ref-card" style="--accent:${d.color}">
       <div class="ref-head"><span class="ref-num" style="background:${d.ink}">${d.num}</span><h3>${esc(d.title)}</h3></div>
@@ -2834,15 +3040,16 @@ function renderHome() {
     const done = totalDone(), pct = Math.round(done / ALL_ELEMENTS.length * 100);
     $('#pc-name').textContent = state.project.name || 'Untitled project';
     const meta = [state.project.lead, state.project.service].filter(Boolean).map(esc).join(' &middot; ');
-    $('#pc-meta').innerHTML = (meta ? meta + ' &middot; ' : '') + `Last saved ${esc(fmtDate(state.updated, true))}`;
+    const saved = fmtDate(state.updated, true);
+    $('#pc-meta').innerHTML = [meta, saved && `Last saved ${esc(saved)}`].filter(Boolean).join(' &middot; ');
     $('#pc-progress').textContent = `${done} of ${ALL_ELEMENTS.length} elements done or not applicable`;
     $('#pc-bar').setAttribute('aria-valuenow', pct);
     $('#pc-fill').style.width = pct + '%';
   }
 }
 function fmtDate(iso, withTime) {
-  if (!iso) return '';
-  const d = new Date(iso);
+  const d = new Date(iso || '');
+  if (!iso || Number.isNaN(d.getTime())) return '';
   const date = d.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
   return withTime ? `${date}, ${d.toLocaleTimeString('en-AU', { hour: 'numeric', minute: '2-digit' })}` : date;
 }
@@ -2850,7 +3057,7 @@ function fmtDate(iso, withTime) {
 // ---------------------------------------------------------------- project plan
 function statusTag(id) {
   const s = statusOf(id);
-  return `<span class="qld__tag status-tag status-${s}">${esc(labelOf(STATUSES, s))}</span>`;
+  return `<span class="qld__tag status-tag status-${esc(s)}">${esc(labelOf(STATUSES, s))}</span>`;
 }
 function projectTable() {
   const p = state.project;
@@ -2864,7 +3071,8 @@ function projectTable() {
   </tbody></table>`;
 }
 function renderPlan() {
-  $('#plan-date').textContent = `Prepared ${fmtDate(new Date().toISOString())}${state.updated ? ` · last edited ${fmtDate(state.updated, true)}` : ''}`;
+  const edited = fmtDate(state.updated, true);
+  $('#plan-date').textContent = `Prepared ${fmtDate(new Date().toISOString())}${edited ? ` · last edited ${edited}` : ''}`;
   const overview = `<table class="qld__table progress-table"><thead><tr><th scope="col">Domain</th><th scope="col">Element</th><th scope="col">Status</th></tr></thead><tbody>` +
     DOMAINS.map(d => d.elements.map((id, i) => `<tr>${i === 0 ? `<th scope="rowgroup" rowspan="${d.elements.length}" class="pt-domain"><span class="domain-dot" style="--domain-color:${d.color}"></span>${d.num}. ${esc(d.title)}</th>` : ''}<td>${ELEMENTS[id].num} ${esc(ELEMENTS[id].title)}</td><td>${statusTag(id)}</td></tr>`).join('')).join('') +
     '</tbody></table>';
@@ -2906,7 +3114,8 @@ function renderBrief() {
       <div class="rh-text">
         <p class="rh-kicker">Value-based health care project</p>
         <p class="rh-project">${esc(p.name) || 'Untitled project'}</p>
-        <p class="rh-meta">${[p.lead && `Project lead: ${esc(p.lead)}`, p.service && esc(p.service), s.sixp.sponsor && `Executive sponsor: ${esc(s.sixp.sponsor)}`].filter(Boolean).join(' &middot; ') || emptyText}</p>
+        <p class="rh-meta">${[p.lead && `Project lead: ${esc(p.lead)}`, p.service && esc(p.service), s.sixp.sponsor && `Executive sponsor: ${esc(s.sixp.sponsor)}`, p.start && `Planned start: ${esc(p.start)}`].filter(Boolean).join(' &middot; ') ||
+          '<span class="empty">Project lead, service and executive sponsor not yet completed</span>'}</p>
         <p class="rh-frame">Planned with the Queensland Health Allied Health Framework for Value-Based Health Care: five domains around people and communities.</p>
       </div>
       <div class="report-visual">${wheelSVG({ links: false, progress: false, cls: 'wheel wheel--report', label: 'The Allied Health Framework for Value-Based Health Care: five domains around people and communities' })}</div>
@@ -3172,12 +3381,27 @@ $('#file-input').addEventListener('change', async e => {
     alert('This file is not a project file from the VBHC project planner.');
     return;
   }
-  if (hasProject() && !confirm(`Open “${data.project && data.project.name || 'Untitled project'}”? It will replace the plan currently in this browser.`)) return;
-  state = normalise(data);
+  const opened = normalise(data);
+  if (hasProject() && !confirm(`Open “${opened.project.name || 'Untitled project'}”? It will replace the plan currently in this browser.`)) return;
+  state = opened;
   if (!state.created) state.created = new Date().toISOString();
   clearTimeout(saveTimer); writeStore();
   toast(`Opened “${state.project.name || 'Untitled project'}”.`);
   show(currentRoute.view === 'home' ? { view: 'home' } : currentRoute, { focus: false });
+});
+
+// ---------------------------------------------------------------- saving across tabs
+// Save at once if the page is hidden or closed during the short pause before saving.
+function flushSave() { if (saveTimer) { clearTimeout(saveTimer); writeStore(); } }
+window.addEventListener('pagehide', flushSave);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushSave(); });
+// The plan is open in another tab or window and was saved there: show that version here,
+// so the next save from this tab does not overwrite the other tab's work.
+window.addEventListener('storage', e => {
+  if (e.key !== STORE_KEY && e.key !== null) return;
+  clearTimeout(saveTimer); saveTimer = null;
+  state = load();
+  show(currentRoute, { focus: false });
 });
 
 // ---------------------------------------------------------------- start
