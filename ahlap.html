@@ -228,6 +228,10 @@ html { scroll-behavior: smooth; }
   display: flex; flex-direction: column; gap: .5rem;
 }
 .ref-head { display: flex; align-items: center; gap: .75rem; }
+/* The website gives unclassed headings in #content a large top margin
+   (#content > :not(.qld__body) h3:not([class]) { margin-top: 2.5rem; }), which outranked the
+   tool's own margins and left a gap at the top of every card. Headings in cards start flush. */
+#content .ref-card h3:not([class]), #content .feedback-card h3:not([class]), #content .fb-col h4:not([class]) { margin-top: 0; }
 #content .ref-card h3 { margin: 0; font-size: 1.25rem; line-height: 1.4; }
 #content .ref-card p { margin: 0; }
 .ref-card .ref-meta { font-size: .875rem; color: var(--QLD-color-light-text__muted); font-weight: 600; }
@@ -253,16 +257,35 @@ td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: t
 #content .qld__tag.tag-focus { background: var(--ahl-info-strong); border-color: var(--ahl-info-strong); color: #fff; }
 
 /* --------------------------------------------------------- assessment tree */
-.tree-step { max-width: var(--measure); }
-#content .tree-progress { margin: 1.5rem 0 .5rem; }
-#content .tree-q { margin: 0; font-size: 1.25rem; line-height: 1.6; }
+/* The question, with the stage (or stages) its answers select beside it on wider screens
+   and between the question and its answers on narrow ones. */
+.tree-step {
+  display: grid; gap: 0 2rem; grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "progress" "question" "outcome" "actions";
+}
+#content .tree-progress { grid-area: progress; margin: 1.5rem 0 .5rem; }
+#content .tree-q { grid-area: question; margin: 0; font-size: 1.25rem; line-height: 1.6; }
 .tree-q:focus { outline: none; }
-.tree-actions { margin-top: 1.5rem; }
+.tree-outcome { grid-area: outcome; margin-top: 1.5rem; }
+.tree-actions { grid-area: actions; margin-top: 1.5rem; }
+@media (min-width: 960px) {
+  .tree-step {
+    grid-template-columns: minmax(0, var(--measure)) minmax(15rem, 22rem); align-items: start;
+    grid-template-areas: "progress ." "question outcome" "actions outcome";
+    grid-template-rows: auto auto 1fr; /* the answers sit under the question, however tall the side panel */
+  }
+  .tree-outcome { margin-top: 0; }
+}
+#content .to-kicker { margin: 0 0 .5rem; font-size: .8125rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--QLD-color-light-text__muted); }
+.to-item + .to-item { margin-top: 1.25rem; }
+#content .to-next { margin: 1rem 0 0; }
 .tree-skip { margin-top: 2rem; }
 .stage-picker-note { margin-top: 1.5rem; }
 
 /* Stage picker: each stage is a clickable card whose title reads as a link */
-.stage-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); margin-top: 1.5rem; }
+#content .stage-grid { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
+#content .stage-grid > li { margin: 0; padding: 0; display: flex; }
+.stage-grid > li > .stage-card { flex: 1 1 auto; }
 .stage-card {
   text-align: left; padding: 1.5rem; cursor: pointer; display: flex; flex-direction: column; gap: .5rem;
   font: inherit; color: var(--QLD-color-light-text); background: var(--QLD-color-light-background);
@@ -278,6 +301,17 @@ td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: t
 .stage-card:hover { box-shadow: 0 1px 2px rgba(0,0,0,.2), 0 1px 3px 1px rgba(0,0,0,.1); }
 .stage-card:hover .sc-title { text-decoration-thickness: var(--QLD-underline__thickness-thick); text-decoration-color: var(--QLD-color-light-hover-underline); }
 .stage-card.suggested { background: var(--QLD-color-light-background__shade); border: 2px solid var(--QLD-color-light-button); } /* FIX A6 */
+.sc-top { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+#content .stage-card .sc-here { font-size: .8125rem; }
+/* Information-only cards: the stage a tree question selects, and the continuum around it.
+   Greyed cards keep AA contrast (muted text on the shaded background). */
+.stage-card.is-static { cursor: default; }
+.stage-card.is-static:hover { box-shadow: none; }
+.stage-card.is-static .sc-title { color: var(--QLD-color-light-heading); text-decoration: none; }
+.stage-card.is-outcome, .stage-card.is-current { background: var(--QLD-color-light-background__shade); border: 2px solid var(--QLD-color-light-button); }
+.stage-card.is-dim { background: var(--QLD-color-light-background__shade); border-color: var(--QLD-color-light-border); color: var(--QLD-color-light-text__muted); }
+.stage-card.is-dim .sc-title { color: var(--QLD-color-light-text__muted); }
+.stage-card.is-dim .sc-num { background: var(--QLD-color-light-text__muted); }
 
 /* -------------------------------------------------------------- assessment */
 .stage-banner {
@@ -851,12 +885,12 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
       <div class="intro-copy">
         <h2>About this self-assessment</h2>
         <!-- FIX R15: link directly to the original framework webpage from the introduction. -->
-        <p>The <a href="https://www.health.qld.gov.au/ahwac/html/allied-health-workforce/leadership" target="_blank" rel="noopener"><strong>Allied Health Leadership and Advancing Practice Framework</strong></a> helps you reflect on
+        <p>The <a href="https://www.health.qld.gov.au/ahwac/html/allied-health-workforce/leadership" target="_blank" rel="noopener"><strong>Allied Health Leadership and Advancing Practice Framework</strong><span class="visually-hidden"> (opens in a new tab)</span></a> helps you reflect on
         the clinical and non-clinical capabilities you need to advance your practice and your leadership.
         It describes how allied health professionals progressively expand their <em>sphere of influence</em> —
         from leading themselves, to leading others, to leading innovations, to leading systems.</p>
 
-        <p>This self-assessment tool walks you through the framework's assessment process:</p>
+        <p>This self-assessment tool walks you through the framework’s assessment process:</p>
         <!-- FIX R17: separate titles from descriptions instead of wrapping a long combined line. -->
         <ol class="intro-steps">
           <li><strong>Framework Assessment Tree</strong><span class="step-description">A few short questions to identify which stage you are working within.</span></li>
@@ -934,9 +968,11 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
   <div class="ahl-section">
     <h2>Framework Assessment Tree</h2>
     <p>Answer these questions to identify the stage of the framework you are currently working within.</p>
+    <!-- The question, with the stage (or stages) its answers select beside it -->
     <div class="tree-step">
       <p class="tree-progress hint" id="tree-progress" aria-live="polite"></p>
       <div class="qld__callout tree-q" id="tree-question" tabindex="-1"></div> <!-- FIX A3: receives focus after each answer -->
+      <div class="tree-outcome" id="tree-outcome"></div>
       <div class="btn-row tree-actions" id="tree-actions"></div>
     </div>
     <p class="hint tree-skip">
@@ -944,13 +980,15 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
     </p>
   </div>
 
-  <div class="ahl-section" id="stage-picker" hidden>
-    <h2 id="stage-picker-title" tabindex="-1">Choose your stage</h2> <!-- FIX A3 -->
-    <p id="stage-picker-lead">Select the stage that best describes where you are working now.</p>
-    <div class="stage-grid" id="stage-grid"></div>
-    <p class="hint stage-picker-note">
-      If after completing the questions you think you should be in a different stage, you may change stage with
-      the consent of your supervisor.
+  <!-- The four stages: while the questions are answered they show where the current question sits
+       on the continuum (its stage highlighted, the others greyed); afterwards each card chooses a stage. -->
+  <div class="ahl-section" id="stage-picker">
+    <h2 id="stage-picker-title" tabindex="-1">The four stages</h2> <!-- FIX A3 -->
+    <p id="stage-picker-lead"></p>
+    <ol class="stage-grid" id="stage-grid"></ol>
+    <p class="hint stage-picker-note" id="stage-picker-note" hidden>
+      If, after answering the self-reflection statements, you think you should be in a different stage, you may
+      change stage with the consent of your supervisor.
     </p>
   </div>
 </section>
@@ -1044,15 +1082,15 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
 
   <div class="ahl-section" id="wilp-card">
     <h2>Work-Integrated Learning Plan</h2>
-    <p>Plan activities to develop the capability areas identified for improvement. Discuss this plan
-    with your supervisor and update it as activities are completed.</p>
+    <p>Plan activities to develop capability areas that have been identified for improvement in the reflection and
+    Capability Compass. Discuss this plan with your supervisor and update it when the activities have been completed.</p>
     <div class="table-wrap">
       <table class="qld__table wilp-table">
         <thead>
           <tr>
             <th scope="col" style="width:22%">Identified development need</th>
             <th scope="col" style="width:30%">Potential activities</th>
-            <th scope="col" style="width:5.5rem">Done?</th>
+            <th scope="col" style="width:8.5rem">Completed?</th>
             <th scope="col">Has this activity helped you meet the development objective? How?</th>
             <th scope="col" class="no-print" style="width:3.5rem"><span class="visually-hidden">Remove</span></th>
           </tr>
@@ -1063,13 +1101,15 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
     <div class="btn-row no-print wilp-actions">
       <button type="button" class="qld__btn qld__btn--secondary" id="btn-add-wilp">+ Add a row</button>
     </div>
+    <p class="hint reassess-note"><strong>Monitoring and re-assessment:</strong> periodically re-complete the self-assessment to
+    reflect on your progression. If appropriate, complete the assessment for a more advanced stage of the framework.</p>
   </div>
 
   <p class="hint source-note">
     <!-- FIX R15: retain the original attribution and make its framework source directly accessible. -->
-    Source: <a href="https://www.health.qld.gov.au/ahwac/html/allied-health-workforce/leadership" target="_blank" rel="noopener"><em>Allied Health Leadership and Advancing Practice Framework 2022</em></a>, State of Queensland
+    Source: <a href="https://www.health.qld.gov.au/ahwac/html/allied-health-workforce/leadership" target="_blank" rel="noopener"><em>Allied Health Leadership and Advancing Practice Framework 2022</em><span class="visually-hidden"> (opens in a new tab)</span></a>, State of Queensland
     (Queensland Health), prepared by the Australian Healthcare and Hospitals Association.
-    Licensed under <a href="https://creativecommons.org/licenses/by/3.0/au/" target="_blank" rel="noopener">CC BY 3.0 AU</a>.
+    Licensed under <a href="https://creativecommons.org/licenses/by/3.0/au/" target="_blank" rel="noopener">CC BY 3.0 AU<span class="visually-hidden"> (opens in a new tab)</span></a>.
   </p>
 </section>
 
@@ -1078,7 +1118,7 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
 </div>
             <section class="qld__body last-updated">
             <div class="container-fluid">
-                <p><strong style="padding-right: 12px;">Last updated:</strong> 1 October 2026</p>
+                <p><strong style="padding-right: 12px;">Last updated:</strong> 8 October 2026</p>
             </div>
         </section>
 </main>
@@ -1317,7 +1357,6 @@ const STAGES = [
     role: 'New starter',
     focus: 'Self development',
     sphere: 'Demonstrates self-awareness, strength of character, key knowledge and understandings, and undertakes personal development.',
-    treeDesc: 'You are in your early career, or in a role where you are learning to apply your knowledge and skills to perform your duties to a high standard.',
     training: [
       'Work-integrated learning accommodated alongside new role responsibilities.',
       'A focus on diversity awareness, interpersonal skills, professional ethics and behaviour, and basic competencies in data and technological systems.'
@@ -1328,7 +1367,6 @@ const STAGES = [
     role: 'Developing',
     focus: 'Working with people and teams',
     sphere: 'Communicates honestly and respectfully, applies the values of diversity, supports consumers, colleagues and others.',
-    treeDesc: 'You have developed in your role, and have a good grasp of your role requirements. You are now expanding your skills to better support, engage and lead your team and colleagues.',
     training: [
       'Work-integrated learning.',
       'Supervision and professional networking.',
@@ -1341,7 +1379,6 @@ const STAGES = [
     role: 'Experienced',
     focus: 'Improvement of services and care outcomes',
     sphere: 'Measures, develops and promotes innovation and improvement to achieve outcomes, evaluates progress and leads change.',
-    treeDesc: 'You are very experienced in your role and have taken advances in your career that have allowed you to lead significant service improvements and innovation.',
     training: [
       'Self-identified development.',
       'Research or formal education, in addition to work-integrated learning.',
@@ -1354,12 +1391,11 @@ const STAGES = [
     role: 'Advanced',
     focus: 'Inter-organisational thinking and strategic engagement',
     sphere: 'Leads systemic development and change, leverages external partnerships, and involves consumers and communities in policy decision-making and addressing wider health problems.',
-    // FIX R13: distinguish system leadership from the service-improvement focus of Stage 3.
-    treeDesc: 'You lead strategic change across services, organisations or sectors, building external partnerships and influencing policy and system-wide outcomes.',
     training: [
       'Self-identified development.',
       'Research or formal education, and work-integrated learning.',
       'Networking with, and mentorship by, people outside your service or sector.',
+      'Networking and collaborating activities.',
       'Leadership, strategy, decision-making and policy training opportunities.'
     ]
   }
@@ -1370,12 +1406,12 @@ const DOMAINS = [
   {
     id: 'clinical', num: 1, title: 'Clinical practice', compassLabel: 'clinical practice',
     color: '#FE65C4', ink: '#B4157A',
-    description: 'The clinical knowledge, skills and abilities for advanced clinical practice in generalist and focussed clinical contexts, as well as profession-specific situations and situations relating to specific client groups or geographical settings.'
+    description: 'This domain encompasses the clinical knowledge, skills and abilities for advanced clinical practice in generalist and focussed clinical contexts, as well as profession-specific situations and situations relating to specific client groups or geographical settings.'
   },
   {
     id: 'person', num: 2, title: 'Person-centred', compassLabel: 'person-centred',
     color: '#FDBC59', ink: '#8A5A00',
-    description: 'Person-centredness is a distinct dimension of high-quality health care. It involves seeking out and understanding what is important to the patient, fostering trust, establishing mutual respect and working together to share decisions and plan care. Considerations of equity and public value highlight the need to embed community and population health in all person-centred approaches.'
+    description: 'Person-centredness is a distinct dimension of high-quality health care. It involves ‘seeking out, and understanding what is important to the patient, fostering trust, establishing mutual respect and working together to share decisions and plan care’. In the Australian universal health care system, considerations of equity and public value highlight the need to embed community and population health in all person-centred approaches.'
   },
   {
     id: 'management', num: 3, title: 'Management', compassLabel: 'management',
@@ -1385,17 +1421,17 @@ const DOMAINS = [
   {
     id: 'learning', num: 4, title: 'Learning', compassLabel: 'learning',
     color: '#8B52FE', ink: '#5A21C9',
-    description: 'Learning refers to the acquisition of skills, knowledge and experience — through formal education, through research endeavours, and through informal knowledge sharing such as mentoring. The capability and commitment to sharing knowledge with other health professionals is pivotal to creating a productive learning culture.'
+    description: 'Learning refers to the acquisition of skills, knowledge, and experience. Learning can occur through formal education, but also occurs through the pursuit of research endeavours and through informal knowledge sharing initiatives (for example, mentoring programs). The capability and commitment to sharing knowledge with other health professionals is pivotal to creating a productive learning culture.'
   },
   {
     id: 'governance', num: 5, title: 'Clinical governance', compassLabel: 'clinical governance',
     color: '#7ED858', ink: '#3D7A22',
-    description: 'Clinical governance entails the processes, guidelines and actions that create clinical leadership and accountability focused on delivering safe and quality driven health care. It empowers people to participate in the management of their own health and contribute to service design, and employs risk management to identify and design practice improvements.'
+    description: 'Clinical governance entails the processes, guidelines and actions that create clinical leadership and accountability focused on delivering safe and quality driven health care. Successful clinical governance achieves high quality health outcomes, practice improvement, and safe and effective services. By considering clinical governance in practice, health professionals can empower people to participate in the management of their own health and contribute to service design. They can also employ risk management processes to identify and design practice improvements, thereby meeting necessary legislative requirements and regulatory standards.'
   },
   {
     id: 'data', num: 6, title: 'Data and technology', compassLabel: 'data and technology',
     color: '#FE5756', ink: '#C1272D',
-    description: 'The adaptability and openness of health professionals to new and emerging technologies, and their capability to understand new data and information, is critical to the resilience of the health system. Being digitally, technologically and data enabled fosters innovation and leadership to drive sustainable health care transformation.'
+    description: 'The adaptability and openness of health professionals to new and emerging technologies, and the capability of health professionals to understand new data and information, is critical to the resilience of the health system. Digital technologies and data utilisation are increasingly important to the way we work and can provide the tools needed to improve health outcomes for people and communities. The use of data in the consultation room and digital technologies in rural and remote areas are two ways in which data can inform care pathways and make a positive difference. Having the skills and knowledge to be digitally, technologically and data enabled will foster innovation and leadership amongst the health workforce to drive sustainable health care transformation.'
   }
 ];
 
@@ -1574,7 +1610,7 @@ const STATEMENTS = {
     ],
     governance: [
       'I understand and uphold safety and quality practices, and relevant current national and international guidelines',
-      'I recognise when I am accountable and responsible for decision-making, particularly when things go wrong',
+      'I recognise when I’m accountable and responsible for decision-making, particularly when things go wrong',
       'I actively promote and contribute to a culture of safety and quality of care'
     ],
     data: [
@@ -1685,26 +1721,24 @@ const STATEMENTS = {
 };
 
 /* ----------------------------------------------------------------
-   Framework Assessment Tree, adapted from the framework stage descriptions.
-   FIX R13: each node asks the user to
-   confirm a description, or say they have advanced beyond it.
+   Framework Assessment Tree, as published in the Assessment Pack (page 6).
+   Each answer either selects a stage or moves on to the next question.
    ---------------------------------------------------------------- */
 const TREE = [
   {
-    desc: STAGES[0].treeDesc,
-    yes: { label: 'Yes',                          stage: 'self' },
-    no:  { label: 'I have advanced further than that', next: 1 }
+    desc: 'You are in your early career, or in a role where you are learning to apply your knowledge and skills to perform your duties to a high standard.',
+    yes: { label: 'Yes', stage: 'self' },
+    no:  { label: 'I’ve advanced further than that', next: 1 }
   },
   {
-    desc: STAGES[1].treeDesc,
-    yes: { label: 'Yes',                          stage: 'others' },
-    no:  { label: 'I have advanced further than that', next: 2 }
+    desc: 'You have developed in your role, and have a good grasp of your role requirements. You are now expanding your skills to better support, engage and lead your team and colleagues.',
+    yes: { label: 'Yes', stage: 'others' },
+    no:  { label: 'I’ve advanced further than that', next: 2 }
   },
   {
-    // FIX R13: agreeing with the innovation description selects Stage 3, not Stage 4.
-    desc: STAGES[2].treeDesc,
-    yes: { label: 'Yes — Leads innovations (Stage 3)', stage: 'innovations' },
-    no:  { label: 'I lead strategic change across services or organisations — Leads systems (Stage 4)', stage: 'systems' }
+    desc: 'You are very experienced in your role and have taken advances in your career that have allowed you to lead significant service improvements and innovation.',
+    yes: { label: 'Yes',       stage: 'systems' },
+    no:  { label: 'Not quite', stage: 'innovations' }
   }
 ];
 
@@ -2178,7 +2212,46 @@ function renderTree() {
     `<button type="button" class="qld__btn qld__btn--secondary" data-tree="no">${esc(node.no.label)}</button>` +
     (treeIndex > 0 ? '<button type="button" class="qld__btn qld__btn--tertiary" data-tree="back">&#8592;&nbsp;Back</button>' : '');
 
-  document.getElementById('stage-picker').hidden = true;
+  // Beside the question: the stage each answer selects. Below it: where that sits on the continuum.
+  const outcomes = [node.yes, node.no].filter(o => o.stage);
+  const next = TREE[node.no.next];
+  const nextStages = next ? [next.yes, next.no].filter(o => o.stage).map(o => stageById(o.stage)).sort((a, b) => a.num - b.num) : [];
+  document.getElementById('tree-outcome').innerHTML = outcomes.map(o => `
+    <div class="to-item">
+      <p class="to-kicker">If you answer &lsquo;${esc(o.label)}&rsquo;</p>
+      ${stageCardHtml(stageById(o.stage), 'is-outcome')}
+    </div>`).join('') + (nextStages.length
+    ? `<p class="hint to-next">If you have advanced further, the next question ${nextStages.length === 1
+        ? 'is about ' + esc(nextStages[0].title)
+        : 'decides between ' + nextStages.map(s => esc(s.title)).join(' and ')}.</p>`
+    : '');
+  renderContinuum(outcomes.map(o => o.stage));
+}
+
+/* While the tree is being answered, the four stages are shown in order: the stage(s) this
+   question can select are highlighted and the rest are greyed, so people can see where
+   they are on the continuum. These cards are not buttons; "Skip the tree" or the tree's
+   answer makes them selectable. */
+function renderContinuum(currentIds) {
+  const picker = document.getElementById('stage-picker');
+  picker.hidden = false;
+  document.getElementById('stage-picker-title').textContent = 'The four stages';
+  document.getElementById('stage-picker-lead').textContent = 'Each stage builds on the previous one. ' + (currentIds.length > 1
+    ? 'This question decides between the two highlighted stages.'
+    : 'This question asks about the highlighted stage.');
+  document.getElementById('stage-picker-note').hidden = true;
+  document.getElementById('stage-grid').innerHTML = STAGES.map(s =>
+    `<li>${stageCardHtml(s, currentIds.indexOf(s.id) !== -1 ? 'is-current' : 'is-dim')}</li>`).join('');
+}
+
+/* A stage card that is information only (not a button). */
+function stageCardHtml(s, variant) {
+  return `<div class="stage-card is-static ${variant}">
+      <span class="sc-top"><span class="sc-num" aria-hidden="true">${s.num}</span>${variant === 'is-current' ? '<span class="qld__tag sc-here">This question</span>' : ''}</span>
+      <span class="sc-title">${esc(s.title)}</span>
+      <span class="sc-role">${esc(s.role)} &middot; ${esc(s.focus)}</span>
+      <span class="sc-desc">${esc(s.sphere)}</span>
+    </div>`;
 }
 
 function answerTree(which) {
@@ -2206,6 +2279,7 @@ function showStagePicker(title, leadHtml, suggestedId) {
   picker.hidden = false;
   document.getElementById('stage-picker-title').textContent = title;
   document.getElementById('stage-picker-lead').innerHTML = leadHtml;
+  document.getElementById('stage-picker-note').hidden = false;
   renderStageGrid(suggestedId);
   picker.scrollIntoView({ block: 'start' });
   focusEl(document.getElementById('stage-picker-title')); // FIX A3
@@ -2216,13 +2290,13 @@ function renderStageGrid(suggestedId) {
   // the suggestion is conveyed by a class plus visually hidden text instead.
   document.getElementById('stage-grid').innerHTML = STAGES.map(s => {
     const sug = s.id === suggestedId;
-    return `
+    return `<li>
     <button type="button" class="stage-card ${sug ? 'suggested' : ''}" data-stage="${s.id}">
-      <span class="sc-num" aria-hidden="true">${s.num}</span>
+      <span class="sc-top"><span class="sc-num" aria-hidden="true">${s.num}</span></span>
       <span class="sc-title">${esc(s.title)}${sug ? ' <span aria-hidden="true">&#10003;</span><span class="visually-hidden">(suggested)</span>' : ''}</span>
       <span class="sc-role">${esc(s.role)} &middot; ${esc(s.focus)}</span>
       <span class="sc-desc">${esc(s.sphere)}</span>
-    </button>`;
+    </button></li>`;
   }).join('');
 }
 
@@ -2618,7 +2692,7 @@ function renderFeedbackCards(averages, stage, nextStage, priority) {
       <ul>${stage.training.map(t => '<li>' + esc(t) + '</li>').join('')}</ul>
       <p class="hint">Further guidance is available from the
         <!-- FIX R15: identify the direct framework destination accurately. -->
-        <a href="${FRAMEWORK_URL}" target="_blank" rel="noopener">original framework webpage</a>.</p>
+        <a href="${FRAMEWORK_URL}" target="_blank" rel="noopener">original framework webpage<span class="visually-hidden"> (opens in a new tab)</span></a>.</p>
     </div>`;
 }
 
@@ -2648,8 +2722,8 @@ function renderWilp() {
       <!-- FIX R01: escaped, domain-specific prompt leaves the user's activity value unchanged. -->
       <td data-label="Potential activities"><textarea class="qld__text-input" data-wilp="activities" data-i="${i}" rows="2" placeholder="${esc(activityPlaceholder(row.need))}"
           aria-label="Potential activities, ${r}">${esc(row.activities)}</textarea><div class="print-text">${esc(row.activities)}</div></td>
-      <td class="wilp-done" data-label="Done?"><div class="qld__control-input"><input type="checkbox" id="wilp-done-${i}" data-wilp="done" data-i="${i}" ${row.done ? 'checked' : ''}
-          ><label class="qld__control-input__text" for="wilp-done-${i}"><span class="visually-hidden">Activity completed, ${r}</span></label></div><span class="print-done">${row.done ? 'Done' : 'Not yet'}</span></td>
+      <td class="wilp-done" data-label="Completed?"><div class="qld__control-input"><input type="checkbox" id="wilp-done-${i}" data-wilp="done" data-i="${i}" ${row.done ? 'checked' : ''}
+          ><label class="qld__control-input__text" for="wilp-done-${i}"><span class="visually-hidden">Activity completed, ${r}</span></label></div><span class="print-done">${row.done ? 'Completed' : 'Not yet'}</span></td>
       <td data-label="Has this activity helped? How?"><textarea class="qld__text-input" data-wilp="reflection" data-i="${i}" rows="2" placeholder="Reflection"
           aria-label="Has this activity helped you meet the development objective, ${r}">${esc(row.reflection)}</textarea><div class="print-text">${esc(row.reflection)}</div></td>
       <td class="no-print"><button type="button" class="wilp-del" data-del="${i}"
@@ -2670,7 +2744,7 @@ function onWilpEdit(e) {
   if (el.type === 'checkbox') {
     row.done = el.checked;
     const printed = el.closest('td').querySelector('.print-done'); // the website's print rules hide the box itself
-    if (printed) printed.textContent = el.checked ? 'Done' : 'Not yet';
+    if (printed) printed.textContent = el.checked ? 'Completed' : 'Not yet';
     persistState();
   }
   else {
@@ -2728,7 +2802,7 @@ document.getElementById('tree-actions').addEventListener('click', e => {
 });
 
 document.getElementById('stage-grid').addEventListener('click', e => {
-  const card = e.target.closest('.stage-card');
+  const card = e.target.closest('button.stage-card'); // the continuum's cards are information only
   if (card) startAssessment(card.dataset.stage);
 });
 
