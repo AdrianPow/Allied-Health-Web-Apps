@@ -65,7 +65,6 @@
    type and spacing stay in step with the website.
    ============================================================================ */
 :root {
-  --measure: 46rem;           /* the site's own reading measure for headings, abstract and callouts */
   /* Framework domain colours, sampled from the published framework artwork. Used only
      where they carry the framework's meaning: the framework diagram and small markers. */
   --d-knowledge:  #103957;
@@ -99,7 +98,9 @@ html { scroll-behavior: smooth; }
 .ahl-section { margin: 0 0 3.5rem; }
 .ahl-section > :last-child { margin-bottom: 0; }
 .ahl-section > h2 + * { margin-top: 1rem; }
-#content .ahl-section p { max-width: var(--measure); }
+/* Text runs the full width of the content, like the cards and tables (the website caps
+   paragraphs at 80ch and page alerts at 48rem). */
+#content .ahl-section p, #content .domain-head p, #content .qld__page-alerts { max-width: none; }
 .split { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; align-items: start; }
 .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
 #content .btn-row > .qld__btn, #content .btn-row > * + .qld__btn { margin: 0; }
@@ -151,13 +152,13 @@ html { scroll-behavior: smooth; }
 /* ------------------------------------------------------------------ tables */
 .table-wrap { overflow-x: auto; position: relative; margin-top: 1.5rem; }
 #content .table-wrap .qld__table { margin: 0; }
-.scale-table-wrap { max-width: 56rem; }
 td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .scale-table td:first-child { white-space: nowrap; }
 
 /* -------------------------------------------------------------------- tags */
 /* Proficiency levels, in the colours of the published tool's badges (amber, blue, green),
-   taken from the Health design system's page alerts (warning, information, success). */
+   taken from the Health design system's page alerts (warning, information, success). They
+   mark the rating scale on the introduction and above the questions, and the results. */
 #content .qld__tag {
   border: 1px solid var(--QLD-color-light-border); border-radius: 1rem; background: var(--QLD-color-light-background__shade);
   color: var(--QLD-color-light-text); white-space: nowrap; max-width: 100%;
@@ -191,7 +192,17 @@ td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: t
   display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
   font-size: .875rem; color: var(--QLD-color-light-text__muted); margin: 0 0 .5rem;
 }
-.progress { height: .5rem; background: var(--QLD-color-light-border); border-radius: 4px; overflow: hidden; margin: 0 0 2rem; }
+.progress { height: .5rem; background: var(--QLD-color-light-border); border-radius: 4px; overflow: hidden; }
+/* The progress bar stays in view while scrolling through the questions, as in the published tool,
+   just below anything already fixed to the top of the window (see updateStickyOffset). */
+.progress-sticky {
+  position: sticky; top: var(--sticky-offset, 0px); z-index: 20;
+  background: var(--QLD-color-light-background); padding: .75rem 0 1rem; margin: 0 0 1.5rem;
+  transition: box-shadow .2s ease;
+}
+.progress-sticky.stuck { box-shadow: 0 8px 8px -8px rgba(0,0,0,.3); }
+/* Keyboard focus and in-page scrolling stop below the sticky bars, never underneath them. */
+html:has(#view-assess:not([hidden])) { scroll-padding-top: calc(var(--sticky-offset, 0px) + var(--progress-height, 0px) + 1rem); }
 .progress-fill { height: 100%; width: 0; background: var(--QLD-color-light-button); transition: width .25s ease; }
 .save-flash { color: var(--ahl-success-ink); font-weight: 600; opacity: 0; transition: opacity .3s; }
 .save-flash.on { opacity: 1; }
@@ -221,7 +232,7 @@ td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: t
 #content .domain-head .domain-kicker { margin: 0 0 .25rem; font-size: .875rem; font-weight: 600; color: var(--QLD-color-light-text__muted); }
 #content .domain-head h2:not([class]) { margin: 0 0 .5rem; }
 .domain-head h2:focus { outline: none; }
-#content .domain-head p { margin: 0; max-width: var(--measure); }
+#content .domain-head p { margin: 0; }
 #content .domain-head p + p { margin-top: .75rem; }
 .dh-visual { width: 20rem; }
 
@@ -361,7 +372,7 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
   .results-table, .results-table tbody, .results-table tr, .results-table td { display: block; width: 100% !important; }
   .scale-table tr, .results-table tr { border-bottom: 1px solid var(--QLD-color-light-border); padding: .75rem 0; }
   #content .scale-table td, #content .results-table td { border: 0; box-shadow: none; padding: .25rem 0; white-space: normal; }
-  #content .scale-table td:first-child, #content .results-table td:first-child { font-weight: 600; color: var(--QLD-color-light-heading); }
+  #content .results-table td:first-child { font-weight: 600; color: var(--QLD-color-light-heading); }
   .results-table td[data-label] { display: flex !important; align-items: center; gap: .5rem; }
   .results-table td[data-label]::before { content: attr(data-label) ":"; font-size: .875rem; color: var(--QLD-color-light-text__muted); min-width: 6.5rem; }
 }
@@ -377,7 +388,7 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
 }
 /* Transition overrides come after the component rules so they win */
 @media (prefers-reduced-motion: reduce) {
-  .progress-fill, .save-flash, .toast, .scale-key > summary::before { transition: none; }
+  .progress-fill, .save-flash, .toast, .scale-key > summary::before, .progress-sticky { transition: none; }
 }
 
 /* ------------------------------------------------------------------- print */
@@ -401,7 +412,7 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
 
   body { background: #fff; font-size: 10.5pt; line-height: 1.45; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .no-print, .qld__header, .qld__main-nav, .qld__body--breadcrumb, .qld__footer, .qld__widgets,
-  .last-updated, .domain-tabs, .progress, .progress-row, .toast, .save-flash, .scale-key { display: none !important; }
+  .last-updated, .domain-tabs, .progress-sticky, .toast, .save-flash, .scale-key { display: none !important; }
   .print-only { display: block; }
   .qld__body .container-fluid, .qld__grid .container-fluid { max-width: none; padding: 0; }
   #content { width: 100% !important; max-width: none !important; flex: 0 0 100% !important; padding: 0 !important; }
@@ -753,7 +764,7 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
     <p>Each statement is rated from 1 to 5.</p>
     <div class="table-wrap scale-table-wrap">
       <table class="qld__table scale-table">
-        <thead><tr><th scope="col" style="width:15rem">Level</th><th scope="col">Description</th></tr></thead>
+        <thead><tr><th scope="col" style="width:18rem">Level</th><th scope="col">Description</th></tr></thead>
         <tbody id="scale-table-body"></tbody>
       </table>
     </div>
@@ -784,13 +795,16 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
 <section id="view-assess" class="view" aria-label="Self-assessment questions" hidden>
   <div class="domain-tabs" role="tablist" aria-label="Assessment domains" id="domain-tabs"></div>
 
-  <div class="progress-row">
-    <span><strong id="progress-count">0</strong> of <span id="progress-total">61</span> questions answered</span>
-    <span class="save-flash" id="save-flash" role="status"></span>
-  </div>
-  <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-       aria-valuenow="0" aria-label="Overall progress" id="progress-bar">
-    <div class="progress-fill" id="progress-fill"></div>
+  <div id="progress-sentinel"></div>
+  <div class="progress-sticky" id="progress-sticky">
+    <div class="progress-row">
+      <span><strong id="progress-count">0</strong> of <span id="progress-total">61</span> questions answered</span>
+      <span class="save-flash" id="save-flash" role="status"></span>
+    </div>
+    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+         aria-valuenow="0" aria-label="Overall progress" id="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
   </div>
 
   <!-- The rating descriptions appear here once (the published tool showed them on hover). -->
@@ -799,7 +813,7 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
     <div class="scale-key-body">
       <div class="table-wrap scale-table-wrap">
         <table class="qld__table scale-table">
-          <thead><tr><th scope="col" style="width:15rem">Level</th><th scope="col">Description</th></tr></thead>
+          <thead><tr><th scope="col" style="width:18rem">Level</th><th scope="col">Description</th></tr></thead>
           <tbody id="scale-key-body"></tbody>
         </table>
       </div>
@@ -1767,9 +1781,37 @@ function show(view, focusSelector) {
   document.getElementById('crumb-mobile-framework').hidden = !home;
   document.getElementById('crumb-mobile-home').hidden = home;
   window.scrollTo(0, 0);
+  updateStickyOffset();
   if (focusSelector) focusEl(document.querySelector(focusSelector));
   refreshTableScroll();
 }
+
+/* The progress bar sticks just below anything already stuck to the top of the window (such as a
+   notice bar). It is measured rather than assumed, so the page works with or without one. */
+function updateStickyOffset() {
+  let offset = 0;
+  for (const el of document.body.children) {
+    const cs = getComputedStyle(el);
+    if (cs.position === 'sticky' && parseFloat(cs.top) === 0) offset = Math.max(offset, el.offsetHeight);
+  }
+  const root = document.documentElement.style;
+  root.setProperty('--sticky-offset', offset + 'px');
+  root.setProperty('--progress-height', document.getElementById('progress-sticky').offsetHeight + 'px');
+  updateStuck();
+}
+/* A shadow under the progress bar while it is stuck, as in the published tool. */
+function updateStuck() {
+  const sticky = document.getElementById('progress-sticky');
+  const top = parseFloat(document.documentElement.style.getPropertyValue('--sticky-offset')) || 0;
+  sticky.classList.toggle('stuck', sticky.offsetParent !== null &&
+    document.getElementById('progress-sentinel').getBoundingClientRect().top < top);
+}
+let stuckFrame = null;
+window.addEventListener('scroll', () => {
+  if (stuckFrame !== null) return;
+  stuckFrame = requestAnimationFrame(() => { stuckFrame = null; updateStuck(); });
+}, { passive: true });
+window.addEventListener('resize', updateStickyOffset);
 
 function focusEl(el) {
   if (!el) return;
@@ -1915,7 +1957,7 @@ function renderIntro() {
 function scaleRows(idPrefix) {
   return SCALE.map(s => `
     <tr>
-      <td><strong>${s.value}</strong> &ndash; ${esc(s.name)}</td>
+      <td><span class="qld__tag ${tierFor(s.value).css}">${s.value} &ndash; ${esc(s.name)}</span></td>
       <td ${idPrefix ? `id="${idPrefix}${s.value}"` : ''}>${esc(s.desc)}</td>
     </tr>`).join('');
 }
