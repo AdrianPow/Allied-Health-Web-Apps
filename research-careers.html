@@ -420,8 +420,9 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
   .print-org { color: var(--QLD-color-light-text__muted); font-size: 9pt; margin: 2pt 0 8pt; border-bottom: 2px solid var(--QLD-color-light-button); padding-bottom: 6pt; }
   .view { margin-top: 0; }
   .ahl-section { margin-bottom: 14pt; }
-  /* As in the published tool, the explanation, each domain's feedback and the next steps start a new page. */
-  #understanding-section, #next-steps-section { break-before: page; }
+  /* As in the published tool, the explanation, the domain feedback (each domain on its own page)
+     and the next steps each start a new page. */
+  #understanding-section, #feedback-section, #next-steps-section { break-before: page; }
   .feedback-card + .feedback-card { break-before: page; }
   .fb-next, .fb-col, .chart-wrap, .chart-legend, tr { break-inside: avoid; }
   .feedback-card { padding: 9pt 11pt; margin-bottom: 9pt; }
@@ -443,6 +444,13 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
   #content li + li { margin-top: 3pt; }
   #content th, #content td { font-size: 9.5pt; line-height: 1.35; }
   #content .feedback-card h3 { font-size: 12pt; }
+  /* Domain feedback is set a little tighter, so each domain fits its page with the section heading. */
+  .feedback-card { padding: 8pt 10pt; }
+  #content .feedback-card p, #content .feedback-card li { font-size: 9.5pt; line-height: 1.35; }
+  #content .feedback-card li + li { margin-top: 2pt; }
+  #content .feedback-card h4:not([class]) { margin: 6pt 0 3pt; }
+  #content .feedback-card ul { margin-top: 3pt; }
+  .fb-next { margin-top: 6pt; }
   .hint { font-size: 8.5pt; }
   /* The website prints every link's address after it; a link that already shows its address skips that. */
   #content a.url-text[href]::after { content: none !important; }
@@ -868,7 +876,7 @@ main.content-page #content.ahl-content > * { padding-left: 0; padding-right: 0; 
     <p>If you are looking to advance or broaden your research capabilities for current or future roles, your results can support conversations with your manager or mentor. Together you can identify targeted training, new opportunities, and develop a structured professional development plan.</p>
   </div>
 
-  <div class="ahl-section">
+  <div class="ahl-section" id="feedback-section">
     <h2>Your domain feedback</h2>
     <div id="feedback-cards"></div>
   </div>
